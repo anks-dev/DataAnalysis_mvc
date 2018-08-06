@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+<div class="content-container">
+    <nav class="dxc-header navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">DXC Technologies</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Nav tabs -->
+
+
+
+    <ul class="nav nav-tabs nav-tabs-x text-uppercase" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">About</a></li>
+        <li role="presentation"><a href="#GlobalView" aria-controls="GlobalView" role="tab" data-toggle="tab">Global View</a></li>
+        <li role="presentation"><a href="#RegionView" aria-controls="RegionView" role="tab" data-toggle="tab">Region View</a></li>
+        <li role="presentation"><a href="#Analysis" aria-controls="Analysis" role="tab" data-toggle="tab">Analysis</a></li>
+        <li role="presentation"><a href="#InstanceInfo" aria-controls="InstanceInfo" role="tab" data-toggle="tab">Instance Info</a></li>
+        <li role="presentation"><a href="#Search" aria-controls="Search" role="tab" data-toggle="tab">Search</a></li>
+        <li role="presentation"><a id="summary-tab" href="#Summary" aria-controls="Summary" role="tab" data-toggle="tab">Summary</a></li>
+        <li role="presentation"><a href="#Help" aria-controls="Help" role="tab" data-toggle="tab">Help</a></li>
+
+    </ul>
+
+    <div class="container">
+
+        <div>
+
+
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane col-sm-12 about-text active" id="home">
+                    @Html.Partial("_HomeTab")
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="Search">
+                    @Html.Partial("_SearchTab")
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="InstanceInfo">
+                    @Html.Partial("_InstanceInfoTab")
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="Analysis">
+                    @Html.Partial("_AnalysisTab")
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="GlobalView">
+                    @Html.Partial("_GlobalViewTab")
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="RegionView">
+                    @Html.Partial("_RegionViewTab")
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="Help">
+                    Help
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="Summary">
+                    @Html.Partial("_SummaryTab")
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+  
+
+

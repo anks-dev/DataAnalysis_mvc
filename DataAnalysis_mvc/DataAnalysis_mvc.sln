@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAnalysis_Web", "DataAnalysis_Web\DataAnalysis_Web.csproj", "{2BA76720-02A5-4D96-8D52-588FD0640750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAnalysis.Service", "DataAnalysis.Service\DataAnalysis.Service.csproj", "{98A1B714-103B-41D3-8BD9-4843DF76B53B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2BA76720-02A5-4D96-8D52-588FD0640750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BA76720-02A5-4D96-8D52-588FD0640750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BA76720-02A5-4D96-8D52-588FD0640750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BA76720-02A5-4D96-8D52-588FD0640750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98A1B714-103B-41D3-8BD9-4843DF76B53B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A1B714-103B-41D3-8BD9-4843DF76B53B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A1B714-103B-41D3-8BD9-4843DF76B53B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A1B714-103B-41D3-8BD9-4843DF76B53B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63F483A5-D1CC-4A22-AE01-CC924F055C7F}
+	EndGlobalSection
+EndGlobal

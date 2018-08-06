@@ -1,0 +1,276 @@
+﻿body{
+    position: relative;   
+
+    min-height: 100vh;
+   
+}
+.container{
+    width:100%;
+}
+.navbar {
+     border-radius:0px; 
+     margin-bottom:0px;
+}
+.nav-tabs-x{
+    background: #eef;
+}
+
+.text-uppercase{
+    text-transform:uppercase;
+}
+.legend .active{
+    text-decoration: line-through;
+}
+
+.strikeoff{
+    text-decoration: line-through;
+}
+.legend-icon{
+     display: inline-block;
+    width: 40px;
+    background: red;
+    height: 20px;
+    vertical-align: sub;
+    margin: 0px 5px;
+    vertical-align:middle;
+}
+
+.legend-text{
+    font-size: 19px;   
+    vertical-align: middle;    
+    /*///color:#CDCDCD;*/
+    color: #807777;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+
+}
+
+
+/* Custom dropdown */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px; /* demo only */
+}
+
+.custom-dropdown select {
+  background-color: #1abc9c;
+  color: #fff;
+  font-size: inherit;
+  padding: .5em;
+  padding-right: 2.5em;	
+  border: 0;
+  margin: 0;
+  border-radius: 3px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  background-image:none;
+  -webkit-appearance: button; /* hide default arrow in chrome OSX */
+
+      min-width: 150px;
+    min-height: 40px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.custom-dropdown select:focus {
+  background-image:none;
+}
+
+.custom-dropdown::before,
+.custom-dropdown::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.custom-dropdown::after { /*  Custom dropdown arrow */
+  content: "\25BC";
+  height: 1em;
+  font-size: .625em;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.custom-dropdown::before { /*  Custom dropdown arrow cover */
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.custom-dropdown select[disabled] {
+  color: rgba(0,0,0,.3);
+}
+
+.custom-dropdown select[disabled]::after {
+  color: rgba(0,0,0,.1);
+}
+
+.custom-dropdown::before {
+  background-color: rgba(0,0,0,.15);
+}
+
+.custom-dropdown::after {
+  color: rgba(0,0,0,.4);
+}
+
+.border{
+    border: 1px solid #eee;
+}
+.border-right{
+    border-right : 1px solid rgba(0,0,0,.25)
+}
+
+.border-left{
+    border-left : 1px solid rgba(0,0,0,.25)
+}
+.border-top{
+    border-top : 1px solid rgba(0,0,0,.25)
+}
+.border-bottom{
+    border-bottom : 1px solid rgba(0,0,0,.25)
+}
+.vertical-margin{
+    margin-bottom:10px;
+    margin-top:10px;
+}
+.serverAnalysisBlock .row {
+     margin-bottom:10px;
+    margin-top:10px;
+}
+.serverAnalysisBlock .thumbnail {
+     min-height:520px;
+}
+.align-legend-bottom {
+    position:absolute;
+    bottom:0;
+}
+
+/********* auto complete styles ********/
+
+ .ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 100px;
+  }
+
+
+
+  /*********instance info styles ********/
+
+ .form-control{
+      background:#e3e6e5;
+  }
+
+ #instanceDetails label, .lbl-instance-name{
+     width:140px;
+     text-align:right;
+     margin-right:10px;
+ }
+
+
+
+ /******  DXC Header styles   *************/
+
+ .dxc-header.navbar-inverse{
+     /*background:#111;*/
+     background:#1d1b1b;
+ }
+ .dxc-header.navbar-brand{
+     color:white;
+ }
+
+  .dataTables_filter,.dataTables_filter label{
+     width:70%;
+ }
+
+ .dataTables_filter label input{
+     min-width:90%;
+ }
+
+
+ /******** search info styles *********/
+ .lbl-search {
+         min-width: 140px;
+    font-size: 14px;
+    font-size: 500;
+    font-weight: 500;
+ }
+ /**************************/
+ .searchlsa{
+     margin-left:50px;
+ }
+
+ .instance-details-panel .panel-heading{
+     background:#2d2e2f;
+ }
+
+ .about-text{
+     font-size:18px;
+ }
+
+ .about-text .dl-horizontal dt{
+     width:auto;
+ }
+ .query-block{
+         border: 1px solid #aaa;
+    background: #ffe;
+ }
+
+ .clear-side-padding{
+      padding-right: 0 !important;
+  padding-left: 0 !important;
+ }
+
+ .summary-block{
+         background: #e6e5e5;
+    padding: 2px;
+ }
+
+ .clear-left-padding{     
+  padding-left: 0 !important;
+ }
+ .clear-right-padding{
+      padding-right: 0 !important;  
+ }
+
+     /*background: #f7f5f5;*/
+
+  footer {
+  /*position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;*/
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+
+  background: #2d2d2d;
+  color: white;
+}
+
+  .color-white{
+      color:white;
+  }
+  .align-legend-bottom {
+     position: relative;     
+    }
+
+  .content-container{
+      min-height: calc(100vh - 44px);
+  }
+   .navbar-inverse .navbar-brand {
+    color: white;
+    }

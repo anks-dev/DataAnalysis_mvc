@@ -1,0 +1,618 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+<div class="content-container">
+    <nav class="dxc-header navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">DXC Technologies</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Nav tabs -->
+
+
+
+    <ul class="nav nav-tabs nav-tabs-x text-uppercase" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">About</a></li>
+        <li role="presentation"><a href="#Analysis" aria-controls="Analysis" role="tab" data-toggle="tab">Analysis</a></li>
+        <li role="presentation"><a href="#InstanceInfo" aria-controls="InstanceInfo" role="tab" data-toggle="tab">Instance Info</a></li>
+        <li role="presentation"><a href="#Search" aria-controls="Search" role="tab" data-toggle="tab">Search</a></li>
+        <li role="presentation"><a id="summary-tab" href="#Summary" aria-controls="Summary" role="tab" data-toggle="tab">Summary</a></li>
+        <li role="presentation"><a href="#Help" aria-controls="Help" role="tab" data-toggle="tab">Help</a></li>
+
+    </ul>
+
+    <div class="container">
+
+        <div>
+
+
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane col-sm-12 about-text active" id="home">
+
+                    <div class="instance-details-panel panel panel-primary vertical-margin">
+                        <div class="panel-heading">
+                            @*<h3 class="panel-title">Custom Query Block</h3>*@
+                            <h2 class="about-header">Analyze -- Filter -- Verify -- Generate and Check on Charts & Graphs.</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-xs-12">
+                                <dl class="dl-horizontal">
+                                    <dt>Analysis Tab - </dt>
+                                    <dd>
+                                        A detailed information about list of instances using PIE Charts & Bar Graphs on different technologies (SQL, Oracle, DB2).
+
+                                        <ol>
+                                            <li>
+                                                Count of instances based on Versions on different environments.
+                                            </li>
+                                            <li>
+                                                Count of instances based on Prod & Non-Prod.
+                                            </li>
+                                            <li>
+                                                Count of instances based on LSA.
+                                            </li>
+                                        </ol>
+                                    </dd>
+                                    <dt> Instance INFO Tab  - </dt>
+                                    <dd>
+                                        This is for showing complete information (like Application Names, Version, LSA, Environment....) based on the instance which is mentioned in Search box.
+                                        Generally this will be useful for management to get information of an instance involved in Techcalls, etc..
+                                    </dd>
+
+                                    <dt>Search Tab - </dt>
+                                    <dd>
+                                        It is used to filter inventory data of our servers and get the count in number, percentage (%), followed by Exporting the data from grid view to CSV on a button click.
+                                    </dd>
+                                </dl>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Search">
+
+
+                    <div class="row">
+                        <div class="col-sm-12 vertical-margin">
+                            <span>
+                                <label class="lbl-search">Select Technology</label>
+                                <span class="custom-dropdown">
+                                    <select id="technologyName" class="clearSearchOnChange">
+                                        <option value="MSSQL">MSSQL</option>
+                                        <option value="ORACLE">ORACLE</option>
+                                        <option value="DB2">DB2</option>
+                                        <option value="ALL">ALL</option>
+                                    </select>
+                                </span>
+                            </span>
+                            <span>
+                                <label class="lbl-search">Select LSA</label>
+                                <span class="custom-dropdown">
+                                    <select id="companyName" class="clearSearchOnChange">
+                                        <option value="Farmers">Farmers</option>
+                                        <option value="EMEA">EMEA</option>
+                                        <option value="ZNA">ZNA</option>
+                                        <option value="21stCentury">21stCentury</option>
+                                        <option>ALL</option>
+                                    </select>
+                                </span>
+                            </span>
+
+                            <button type="button" class="btn btn-primary searchlsa">Search </button>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 querytemplate">
+                            <span class="custom-dropdown">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="instance-details-panel panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Custom Query Block</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-xs-12 query-block">
+                                    <div class="tab-content">
+                                        <div class="vertical-margin" id="query">
+                                            <div class="col-sm-12 vertical-margin">
+                                            </div>
+                                            <div class="col-sm-12 vertical-margin">
+                                                <div class="col-sm-2">
+                                                    <label class="lbl-search">Select Field</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label class="lbl-search">Select Operator</label>
+
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <label class="lbl-search">Value</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-9 constContainer clear-side-padding">
+                                                <div class="constBlock col-sm-12 clear-side-padding">
+                                                    <div class="col-sm-2 clear-side-padding">
+                                                        <span class="custom-dropdown">
+                                                            <select id="tableColumn"  class="clearSearchOnChange" ></select>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-3 ">
+                                                        <span class="custom-dropdown">
+                                                            <select id="operator"  class="clearSearchOnChange">
+                                                                <option value="=="> == </option>
+                                                                <option value="!="> != </option>
+                                                                <option value="<"> < </option>
+                                                                <option value="<="> <= </option>
+                                                                <option value=">"> > </option>
+                                                                <option value=">="> >= </option>
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-7 vertical-margin clear-side-padding">
+                                                        <div class="col-sm-8 clear-side-padding">
+                                                            <input id="matchValue" type="text"
+                                                                   class="form-control">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <span class="pull-right d-inline-block">
+                                                                @*<button id="addConstraint" type="button" title="Add another constraint"
+                                                                            class="btn btn-primary addConstraint">
+                                                                        + ADD
+                                                                    </button>
+                                                                    <button id="removeConstraint" type="button" title="Remove this constraint"
+                                                                            class="btn btn-primary removeConstraint">
+                                                                        X
+                                                                    </button>*@
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <span class="pull-right d-inline-block">
+                                                    <button id="filter" type="button" title="Add another constraint"
+                                                            class="btn btn-primary">
+                                                        Filter
+                                                    </button>
+                                                    <button id="clearFilter" type="button" title="Remove this constraint"
+                                                            class="btn btn-primary">
+                                                        Clear Query
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="vertical-margin" id="list">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Search Result</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="instancesList" class="display" width="100%"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="InstanceInfo">
+
+                    <form class="form-inline vertical-margin">
+
+                        <div>
+                            <div class="form-group">
+                                <label class="lbl-instance-name" for="instanceName">Enter Instance name</label>
+                                <input type="text" class="form-control" id="instancename"
+                                       placeholder="Enter instance Name">
+                            </div>
+                        </div>
+                        <div id="instanceDetails" class="readonly vertical-margin ">
+
+
+                            <div class="instance-details-panel panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Instance Details</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="">
+                                        <div class="form-group">
+                                            <label for="company">Company</label>
+                                            <input id="company" data-bind='value: company' class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <input id="status" data-bind='value: status' class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edition">Edition</label>
+                                            <input id="edition" data-bind='value: edition' class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="form-group vertical-margin">
+                                            <div class="form-group">
+                                                <label for="supportedby">Supported By</label>
+                                                <input type="text" data-bind='value: supportedBy' class="form-control" id="supportedby">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="version">Version</label>
+                                                <input type="text" data-bind='value: version' class="form-control" id="version">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="virtual">Virtual</label>
+                                                <input type="text" data-bind='value: virtual' id="virtual" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="form-group vertical-margin">
+                                            <div class="form-group">
+                                                <label for="machinename">Machine Name</label>
+                                                <input type="text" data-bind='value: machineName' class="form-control" id="machinename">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="servicePack">Service Pack</label>
+                                                <input type="text" data-bind='value: servicePack' class="form-control" id="servicePack">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="projectUsing">Project using</label>
+                                                <input type="text" data-bind='value: projectUsing' class="form-control" id="projectUsing">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="form-group vertical-margin">
+                                            <div class="form-group">
+                                                <label for="ipAddress">IP Address</label>
+                                                <input type="text" data-bind='value: ipAddress' class="form-control" id="ipAddress">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="os">OS</label>
+                                                <input type="text" data-bind='value: os' class="form-control" id="os">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monitor">Monitor</label>
+                                                <input type="text" data-bind='value: monitor' class="form-control" id="monitor">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="form-group vertical-margin">
+                                            <div class="">
+                                                <div class="form-group">
+                                                    <label for="contact">Contact</label>
+                                                    <textarea class="form-control" id="contact"
+                                                              rows="5" cols="105"
+                                                              data-bind='value: contact'></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </form>
+
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Analysis">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-primary vertical-margin">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Servers</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-xs-4">
+                                        <h4 class="text-center">Technology</h4>
+                                        <h1></h1>
+                                        <canvas id="TechDetailsCanvas" width="400" height="400"></canvas>
+                                        <div id="tech-details-legend" class="chart-legend"></div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <h4 class="text-center">Environment</h4>
+                                        <h1></h1>
+                                        <canvas id="EnvDetailsCanvas" width="400" height="400"></canvas>
+                                        <div id="env-details-legend" class="chart-legend"></div>
+
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <h4 class="text-center">LSA</h4>
+                                        <h1></h1>
+                                        <canvas id="LSADetailsCanvas" width="400" height="400"></canvas>
+                                        <div id="lsa-details-legend" class="chart-legend"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="serverAnalysisBlock vertical-margin">
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Servers</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <span class="custom-dropdown">
+                                            <select id="dataServerType">
+                                                <option value="Farmers">Farmers</option>
+                                                <option value="EMEA">EMEA</option>
+                                                <option value="ZNA">ZNA</option>
+                                                <option value="21stCentury">21stCentury</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 ">
+                                        <div class="col-sm-1"></div>
+                                        <div class="col-sm-10">
+                                            <div class="col-xs-4 ">
+                                                <div class="col-xs-12 thumbnail">
+                                                    <h4 class="text-center">Technology</h4>
+                                                    <h1></h1>
+                                                    <canvas id="serverTechDetailsCanvas" width="400" height="400"></canvas>
+                                                    <div id="server-tech-details-legend" class="chart-legend vertical-margin align-legend-bottom"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 ">
+                                                <div class="col-xs-12 thumbnail">
+                                                    <h4 class="text-center">Environment</h4>
+                                                    <h1></h1>
+                                                    <canvas id="serverEnvDetailsCanvas" width="400" height="400"></canvas>
+                                                    <div id="server-env-details-legend" class="chart-legend vertical-margin align-legend-bottom"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 ">
+                                                <div class="col-xs-12 thumbnail">
+                                                    <h4 class="text-center">Server Type</h4>
+                                                    <h1></h1>
+                                                    <canvas id="serverTypeDetailsCanvas" width="400" height="400"></canvas>
+                                                    <div id="server-type-details-legend" class="chart-legend vertical-margin align-legend-bottom"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="col-xs-12 thumbnail">
+                                    <canvas id="prodSqlServersCanvas" width="400" height="400"></canvas>
+                                    <div id="tech-details-legend" class="chart-legend"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-12 thumbnail">
+                                    <canvas id="nonProdSqlServersCanvas" width="400" height="400"></canvas>
+                                    <div id="tech-details-legend" class="chart-legend"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="col-xs-12 thumbnail">
+                                    <canvas id="prodDB2ServersCanvas" width="400" height="400"></canvas>
+                                    <div id="env-details-legend" class="chart-legend"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-12 thumbnail">
+                                    <canvas id="nonProdDB2ServersCanvas" width="400" height="400"></canvas>
+                                    <div id="env-details-legend" class="chart-legend"></div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="col-xs-12 thumbnail">
+                                    <canvas id="prodOracleServersCanvas" width="400" height="400"></canvas>
+                                    <div id="lsa-details-legend" class="chart-legend"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-xs-12 thumbnail">
+                                    <canvas id="nonProdOracleServersCanvas" width="400" height="400"></canvas>
+                                    <div id="lsa-details-legend" class="chart-legend"></div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Help">
+                    Help
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Summary">
+
+                    <div class="col-sm-12 vertical-margin summary-block">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Technology Summary</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table id="technologySummary" class="display" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 vertical-margin clear-side-padding">
+                        <div class="col-sm-6 clear-left-padding">
+                            <div class="col-sm-12 summary-block">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">MSSQL Summary</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="mssqlSummary" class="display" width="100%"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 clear-left-padding">
+                            <div class="col-sm-12 summary-block">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">MSSQL Version Summary</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="mssqlVersionSummary" class="display" width="100%"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 vertical-margin clear-side-padding">
+                        <div class="col-sm-6 clear-left-padding">
+                            <div class="col-sm-12 summary-block">
+
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">Oracle Summary</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="oracleSummary" class="display" width="100%"></table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 clear-left-padding">
+                            <div class="col-sm-12 summary-block">
+
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">Oracle Version Summary</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="oracleVersionSummary" class="display" width="100%"></table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 vertical-margin clear-side-padding">
+                        <div class="col-sm-6 clear-left-padding">
+                            <div class="col-sm-12 summary-block">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">DB2 Summary</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="db2Summary" class="display" width="100%"></table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 clear-left-padding">
+                            <div class="col-sm-12 summary-block">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">DB2 Version Summary</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="db2VersionSummary" class="display" width="100%"></table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 vertical-margin clear-side-padding">
+                        <div class="col-sm-6 clear-left-padding">
+                            <div class="col-sm-12 summary-block">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">LSA Summary</h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="lsaSummary" class="display" width="100%"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+  
+
+
