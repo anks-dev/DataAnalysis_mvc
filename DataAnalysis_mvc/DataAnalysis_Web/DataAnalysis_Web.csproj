@@ -250,6 +250,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\app\dashboard.js" />
     <Content Include="Scripts\app\globalServersInfo.js" />
+    <Content Include="Scripts\app\RegionView.js" />
     <Content Include="Scripts\app\searchInstance.js" />
     <Content Include="Scripts\app\summary.js" />
     <Content Include="Scripts\bootstrap-material-design.js" />

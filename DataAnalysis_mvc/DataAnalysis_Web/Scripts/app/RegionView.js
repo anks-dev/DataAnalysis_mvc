@@ -1,28 +1,113 @@
-﻿$(document).ready(function () {
+﻿var serverAnalysisData = {};
+var canvasCharts = [];
+var instanceServerTechInfoChart = {};
+var instanceServerEnvInfoChart = {};
+var instanceServerTypeInfoChart = {};
+
+var oracleServerProdInfoChart = {};
+var db2ServerProdInfoChart = {};
+var mssqlServerProdInfoChart = {};
+
+var oracleServerNonProdInfoChart = {};
+var db2ServerNonProdInfoChart = {};
+var mssqlServerNonProdInfoChart = {};
+
+
+$(document).ready(function () {
+
+    $("#dataServerType").change(function () {
+        console.log("Server Type changed")
+        var selectedValue = this.options[this.selectedIndex].value;
+        if (!selectedValue) {
+            return;
+        }
+        selectedValue = selectedValue.toLowerCase();
+        //alert($('option:selected', this).text());
+
+        switch (selectedValue) {
+
+            case 'zna': bindIndividualServerData(serverAnalysisData.znaServersAnalysis);
+                break;
+
+            case 'farmers': bindIndividualServerData(serverAnalysisData.farmersAnalysis);
+                break;
+
+            case 'emea': bindIndividualServerData(serverAnalysisData.emeaServersAnalysis);
+                break;
+
+            case '21stcentury': bindIndividualServerData(serverAnalysisData._21stCenturyServersAnalysis);
+                break;
+        }
+    });
+
    
+    var tooltipOptions = {
+        custom: function (tooltip) {
+            //tooltip.x = 0;
+            //tooltip.y = 0;
+        },
+        mode: 'single',
+        callbacks: {
+            label: function (tooltipItems, data) {
+                var sum = data.datasets[0].data.reduce(add, 0);
+                function add(a, b) {
+                    return a + b;
+                }
+
+                return parseInt((data.datasets[0].data[tooltipItems.index] / sum * 100), 10) + ' %';
+            },
+            beforeLabel: function (tooltipItems, data) {
+                return data.datasets[0].data[tooltipItems.index];
+            }
+        }
+    };
+    var otherOptions = {
+        animation: {
+            animateRotate: true,
+            animateScale: true
+        },
+        legend: false,
+        legendCallback: function (chart) {
+            var text = [];
+            text.push('<ul  class=list-unstyled "' + chart.id + '-legend">');
+            for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
+                text.push('<li onclick="toggleLegend(this)" class="legend" role="button" data-toggle="button" aria-pressed="false" autocomplete="off" ><span class="legend-icon" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"></span><span class="legend-text">');
+                if (chart.data.labels[i]) {
+                    text.push(chart.data.labels[i]);
+                }
+                text.push('</span></li>');
+            }
+            text.push('</ul>');
+            return text.join("");
+        }
+    }
+
     var jqxhr = $.ajax({
         method: "GET",
-        url: "api/home/getServersCountGlobally",
+        url: "api/home/getanlysisdata",
 
     }).done(function (data) {
         console.log(data);
         serverAnalysisData = data;
 
-       let techDetails_GlobalCanvas = document.getElementById("TechDetailsCanvas-global");
-       let envDetails_GlobalCanvas = document.getElementById("EnvDetailsCanvas-global");
-       let lsaDetails_GlobalCanvas = document.getElementById("LSADetailsCanvas-global");        
-
-        let TechDetails = data.technologyDetails;
-        let EnvDetails = data.environmentDetails;
-        let LSADetails = data.lsaDetails;
+        var techDetailsCanvas = document.getElementById("TechDetailsCanvas-rg");
+        var envDetailsCanvas = document.getElementById("EnvDetailsCanvas-rg");
+        var lsaDetailsCanvas = document.getElementById("LSADetailsCanvas-rg");
 
 
-        let legendToggleFunction = function (e) {
+
+
+        var TechDetails = data.technologyDetails;
+        var EnvDetails = data.environmentDetails;
+        var LSADetails = data.lsaDetails;
+
+
+        var legendToggleFunction = function (e) {
 
             if (e && e.data && e.data.chart) {
 
 
-                let chart = e.data.chart;
+                var chart = e.data.chart;
                 if (chart.data.datasets[0].data["tdToggle" + $(this).index()]) {
                     chart.data.datasets[0].data["tdToggle" + $(this).index()] = false;
                     chart.data.datasets[0].data[$(this).index()] = chart.data.datasets[0].data["tdToggleValue" + $(this).index()]
@@ -39,57 +124,116 @@
         };
         var opts
 
-        if (techDetails_GlobalCanvas) {
+        if (TechDetailsCanvas) {
 
             opts = {};
-            opts.data = data.technologyCount.map(c => Object.values(c)[1]);
-            opts.labels = data.technologyCount.map(c => Object.values(c)[0] + 'Servers (' + Object.values(c)[1] +')');
-            opts.colors = ["rgb(255, 99, 132)",  "rgb(54, 162, 235)", "rgb(255, 205, 86)"
+            opts.data = [TechDetails.oracleServersCount,
+            TechDetails.mssqlServersCount,
+            TechDetails.dB2ServersCount
             ];
-            opts.legendCtrl = $("#tech-details-legend-global");
+            opts.labels = ["Orace Servers",
+                "MSSQL Servers",
+                "DB2 Servers"
+            ];
+            opts.colors = ["rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(255, 205, 86)"
+            ];
+            opts.legendCtrl = $("#tech-details-legend");
 
-            var tchartt = bindDataServerInfoToCharts(opts, techDetails_GlobalCanvas);
+            var tchartt = bindDataServerInfoToCharts(opts, techDetailsCanvas);
 
         }
 
-        if (envDetails_GlobalCanvas) {
+        if (envDetailsCanvas) {
 
-            opts.data = data.enviromnetCount.map(c => Object.values(c)[1]);
-            opts.labels = data.enviromnetCount.map(c => Object.values(c)[0] + 'Servers(' + Object.values(c)[1] +')');
+            opts.data = [EnvDetails.envProdCount,
+            EnvDetails.envNonProdCount,
+            ];
+            opts.labels = [
+                "Prod Servers",
+                "Non Prod Servers"
+            ];
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
                 "rgb(255, 205, 86)"
             ];
-            opts.legendCtrl = $("#env-details-legend-global");
+            opts.legendCtrl = $("#env-details-legend");
 
-            var echartt = bindDataServerInfoToCharts(opts, envDetails_GlobalCanvas);
+            var echartt = bindDataServerInfoToCharts(opts, envDetailsCanvas);
 
         }
 
-        if (lsaDetails_GlobalCanvas) {
+        if (lsaDetailsCanvas) {
 
 
-            opts.data = data.lsaCount.map(c => Object.values(c)[1]);
-            opts.labels = data.lsaCount.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] +')');
+            opts.data = [LSADetails.emeaCount,
+            LSADetails.znaCount,
+            LSADetails.farmersCount,
+            LSADetails._21CenturyCount
+            ];
+            opts.labels = [
+                "EMEA Servers",
+                "ZNA Servers",
+                "FARMERS Servers",
+                "21CENTURY Servers"
+
+            ];
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
                 "rgb(1,132,143)",
                 "rgb(245, 185, 76)"
             ];
-            opts.legendCtrl = $("#lsa-details-legend-global");
+            opts.legendCtrl = $("#lsa-details-legend");
 
-            var echartt = bindDataServerInfoToCharts(opts, lsaDetails_GlobalCanvas);            
+            var echartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
+
+
+
+            //var serverCountData = {
+            //    labels: [
+            //        "EMEA Servers",
+            //        "ZNA Servers",
+            //        "FARMERS Servers",
+            //        "21CENTURY Servers"
+
+            //    ],
+            //    datasets: [
+            //        {
+            //            data: [LSADetails.eMEACount,
+            //                LSADetails.zNACount,
+            //                LSADetails.framersCount,
+            //                 LSADetails._21CenturyCount                                     
+            //            ],
+            //            backgroundColor: [
+            //                "rgb(255, 99, 132)",
+            //                "rgb(54, 162, 235)",
+            //                "rgb(255, 205, 86)",
+            //                "rgb(245, 185, 76)"
+            //            ]
+            //        }]
+            //};              
+
+            //var lsaPieChart = new Chart(lsaDetailsCanvas, {
+            //    type: 'doughnutLabels',
+            //    data: serverCountData,                 
+            //    options: otherOptions
+
+            //});
+            //$("#lsa-details-legend").html(lsaPieChart.generateLegend());
+            //$("#lsa-details-legend").on('click', "li", { chart:lsaPieChart},legendToggleFunction);
+
         }
 
-       // $("#dataServerType").trigger('change');
+        $("#dataServerType").trigger('change');
 
     })
-      .fail(function (error) {
+        .fail(function (error) {
             console.log(error);
         })
-      .always(function () {
+        .always(function () {
         });
 
     function bindDataServerInfoToCharts(opts, canvas) {
@@ -313,10 +457,7 @@
             opts.legendCtrl = $("#server-type-details-legend");
 
             instanceServerTypeInfoChart = bindDataServerInfoToCharts(opts, serverTypeDetailsCanvas);
-
-
-
-
+            
         }
 
         if (prodSqlServersCanvas && data.sqlServersProd) {

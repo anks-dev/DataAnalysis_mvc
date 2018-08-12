@@ -22,50 +22,19 @@ namespace DataAnalysis.Service
             return this.db.Fetch<string>("SELECT * FROM sys.Tables");
         }
 
+        public List<string> GetRegions()
+        {
+            return this.db.Fetch<string>("select distinct(Region) from [dbo].[instanceinfo]");
+        }
+
+        public List<string> GetCompaniesByRegion(string region)
+        {
+            return this.db.Fetch<string>("select distinct(Company) from [dbo].[instanceinfo] where region=@0", region);
+        }
 
         public Models.TechnologyDetailsViewModel GetServersTechnologyDetails()
         {
-            var model = new Models.AnalysisViewModel();
-
-            ////model.NonProdMachines = this.db.Fetch<ORACLE_Servers_EMEA>("Select distinct ServerName from ORACLE_Servers_EMEA where isbillable = 1").Count();
-            //model.OracleServersCount = this.db.Fetch<Object>
-            //    ("SELECT *   FROM[ORACLE_Servers_FARMERS]  where Monitor = 'yes'" +
-            //        "union all " +
-            //        "SELECT *" +
-            //        "FROM[ORACLE_Servers_Emea]  where Monitor = 'yes'" +
-            //        "  union all " +
-            //        "SELECT *" +
-            //        "FROM[ORACLE_Servers_Century]  where Monitor = 'yes'" +
-            //        "  union all " +
-            //        "SELECT *" +
-            //        "FROM[ORACLE_Servers_ZNA]  where Monitor = 'yes'").Count();
-
-
-            ////model.NonProdMachines = this.db.Fetch<ORACLE_Servers_EMEA>("Select distinct ServerName from ORACLE_Servers_EMEA where isbillable = 1").Count();
-            //model.DB2ServersCount = this.db.Fetch<Object>
-            //    ("SELECT *   FROM[DB2_Servers_FARMERS]  where Monitor = 'yes'" +
-            //        "union all " +
-            //        "SELECT *" +
-            //        "FROM[DB2_Servers_Emea]  where Monitor = 'yes'" +
-            //        "  union all " +
-            //        "SELECT *" +
-            //        "FROM[DB2_Servers_ZNA]  where Monitor = 'yes'").Count();
-
-
-            ////model.NonProdMachines = this.db.Fetch<ORACLE_Servers_EMEA>("Select distinct ServerName from ORACLE_Servers_EMEA where isbillable = 1").Count();
-            //model.MSSQLServersCount = this.db.Fetch<Object>
-            //    ("SELECT [Instance Name],Monitor    FROM[MSSQL_Servers_FARMERS]  where Monitor = 'yes'" +
-            //        "union all " +
-            //        "SELECT [InstanceName],[Status] " +
-            //        "FROM[MSSQL_Servers_Emea]   where IsBillable=1" +
-            //        "  union all " +
-            //        "SELECT [Instance Name],Monitor " +
-            //        "FROM[MSSQL_Servers_Century]  where Monitor = 'yes'" +
-            //        "  union all " +
-            //        "SELECT [Instance Name],Monitor " +
-            //        "FROM[MSSQL_Servers_ZNA]  where Monitor = 'yes'").Count();
-
-
+            var model = new Models.AnalysisViewModel();            
             //model.NonProdMachines = this.db.Fetch<ORACLE_Servers_EMEA>("Select distinct ServerName from ORACLE_Servers_EMEA where isbillable = 1").Count();
             return this.db.FirstOrDefault<TechnologyDetailsViewModel>
                 ("select sum(case when version like 'SQL%' then 1 else 0 end) MSSQLServersCount," +
@@ -111,6 +80,20 @@ namespace DataAnalysis.Service
             return vm;
         }
 
+        public AnalysisViewModel getServersAnalysisByRegionandCompany(string region , string company)
+        {
+            var vm = new AnalysisViewModel();
+            vm.TechnologyDetails = this.GetServersTechnologyDetails();
+            vm.EnvironmentDetails = this.GetServersEnvironmentDetails();
+            vm.LSADetails = this.GetServersLSADetails();
+            vm.FarmersAnalysis = this.GetFarmerAnalysisViewModel();
+            vm.ZNAServersAnalysis = this.GetZNAServersAnalysisViewModel();
+            vm.EMEAServersAnalysis = this.GetEMEAServersAnalysisViewModel();
+            vm._21stCenturyServersAnalysis = this.Get21CentServersAnalysisViewModel();
+            vm.globalCount = this.getGlobalServersAnalysisView();
+            return vm;
+        }
+
         public dynamic getGlobalServersAnalysisView()
         {
             return new {
@@ -135,6 +118,87 @@ namespace DataAnalysis.Service
             return this.db.Query<dynamic>("select * from technologyCount");
         }
 
+        public dynamic getServersAnalysisByRegion(string region)
+        {
+            return new
+            {
+                TechnologyCount = this.GetTechnologyServersByRgion(region),
+                EnviromnetCount = this.GetEnvironmentServersByRegion(region),
+                LSACount = this.GetLSAServersByRegion(region)
+            };
+        }
+
+        private dynamic GetLSAServersByRegion(string region)
+        {
+            return this.db.Query<dynamic>("exec LsaViewTech @0", region);
+        }
+
+        private dynamic GetEnvironmentServersByRegion(string region)
+        {
+            return this.db.Query<dynamic>("exec EnvironmentViewTech @0", region);
+        }
+
+        private dynamic GetTechnologyServersByRgion(string region)
+        {
+            return this.db.Query<dynamic>("exec RegionViewTech @0", region);
+        }
+
+        private dynamic GetLSAServersByRegionandCompany(string region, string company)
+        {
+            return this.db.Query<dynamic>("exec ServerType_AccountViewTech @0, @1", region, company);
+        }
+
+        private dynamic GetEnvironmentServersByRegionandCompany(string region, string company)
+        {
+            return this.db.Query<dynamic>("exec Environment_AccountViewTech @0, @1", region, company);
+        }
+
+        private dynamic GetTechnologyServersByRgionandCompany(string region, string company)
+        {
+            return this.db.Query<dynamic>("exec Region_AccountViewTech @0, @1", region, company);
+        }
+
+        public Dictionary<string, int> GetProdOracleServersCountByRegion(string region, string company)
+        {
+            return this.db.Query<dynamic>(
+                "exec [dbo].[OracleVersion_ProdView] @0, @1", region, company)
+                .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
+        }
+
+        public Dictionary<string, int> GetNonProdOracleServersCountByRegion(string region, string company)
+        {
+            return this.db.Query<dynamic>(
+                "exec [dbo].[OracleVersion_NonProdView] @0, @1", region, company)
+                .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
+        }
+
+        public Dictionary<string, int> GetProdSqlServersCountByRegion(string region, string company)
+        {
+            return this.db.Query<dynamic>(
+                "exec [dbo].[SQLVersion_ProdView] @0, @1", region, company)
+                .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
+        }
+
+        public Dictionary<string, int> GetNonProdSqlServersCountByRegion(string region, string company)
+        {
+            return this.db.Query<dynamic>(
+                "exec [dbo].[SQLVersion_NonProdView] @0, @1", region, company)
+                .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
+        }
+
+        public Dictionary<string, int> GetProdDB2ServersCountByRegion(string region, string company)
+        {
+            return this.db.Query<dynamic>(
+                "exec [dbo].[DB2Version_ProdView] @0, @1", region, company)
+                .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
+        }
+
+        public Dictionary<string, int> GetNonProdDB2ServersCountByRegion(string region, string company)
+        {
+            return this.db.Query<dynamic>(
+                "exec [dbo].[DB2Version_NonProdView] @0, @1", region, company)
+                .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
+        }
 
 
         #region FarmersAnalysis
