@@ -17,6 +17,12 @@ namespace DataAnalysis_Web.Controllers.api
         {
            return new ServersManager().getServersAnalysisViewModel();
         }
+        
+        [Route("getServersCountGlobally")]
+        public dynamic GetServersCountGlobally()
+        {
+            return new ServersManager().getGlobalServersAnalysisView();
+        }
 
 
         [Route("getInstanceInfo")]

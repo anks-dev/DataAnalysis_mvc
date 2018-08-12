@@ -133,9 +133,14 @@ $(document).ready(function () {
     }).done(function (data) {
           console.log(data);
           serverAnalysisData = data;
+
           var techDetailsCanvas = document.getElementById("TechDetailsCanvas");
           var envDetailsCanvas = document.getElementById("EnvDetailsCanvas");
           var lsaDetailsCanvas = document.getElementById("LSADetailsCanvas");
+
+          
+
+
           var TechDetails = data.technologyDetails;
           var EnvDetails = data.environmentDetails;
           var LSADetails = data.lsaDetails;

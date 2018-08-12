@@ -26,3 +26,10 @@ C:\Users\anks\Downloads\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnal
 C:\Users\anks\Downloads\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnalysis.Service.csproj.CoreCompileInputs.cache
 C:\Users\anks\Downloads\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnalysis.Service.dll
 C:\Users\anks\Downloads\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnalysis.Service.pdb
+C:\Users\anks\Downloads\repos\New folder\DataAnalysis_mvc\DataAnalysis_mvc\DataAnalysis.Service\bin\Debug\DataAnalysis.Service.dll.config
+C:\Users\anks\Downloads\repos\New folder\DataAnalysis_mvc\DataAnalysis_mvc\DataAnalysis.Service\bin\Debug\DataAnalysis.Service.dll
+C:\Users\anks\Downloads\repos\New folder\DataAnalysis_mvc\DataAnalysis_mvc\DataAnalysis.Service\bin\Debug\DataAnalysis.Service.pdb
+C:\Users\anks\Downloads\repos\New folder\DataAnalysis_mvc\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnalysis.Service.csprojAssemblyReference.cache
+C:\Users\anks\Downloads\repos\New folder\DataAnalysis_mvc\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnalysis.Service.csproj.CoreCompileInputs.cache
+C:\Users\anks\Downloads\repos\New folder\DataAnalysis_mvc\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnalysis.Service.dll
+C:\Users\anks\Downloads\repos\New folder\DataAnalysis_mvc\DataAnalysis_mvc\DataAnalysis.Service\obj\Debug\DataAnalysis.Service.pdb

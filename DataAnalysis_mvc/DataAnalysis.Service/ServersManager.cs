@@ -107,9 +107,35 @@ namespace DataAnalysis.Service
             vm.ZNAServersAnalysis = this.GetZNAServersAnalysisViewModel();
             vm.EMEAServersAnalysis = this.GetEMEAServersAnalysisViewModel();
             vm._21stCenturyServersAnalysis = this.Get21CentServersAnalysisViewModel();
-
+            vm.globalCount = this.getGlobalServersAnalysisView();
             return vm;
-        }        
+        }
+
+        public dynamic getGlobalServersAnalysisView()
+        {
+            return new {
+                TechnologyCount = this.GetTechnologyServersGlobally(),
+                EnviromnetCount = this.GetEnvironmentServersGlobally(),
+                LSACount = this.GetLSAServersGlobally()
+            };
+        }
+
+        private dynamic GetLSAServersGlobally()
+        {
+            return this.db.Query<dynamic>("select * from regionCount");              
+        }
+
+        private dynamic GetEnvironmentServersGlobally()
+        {
+            return this.db.Query<dynamic>("select * from environmentCount");
+        }
+
+        private dynamic GetTechnologyServersGlobally()
+        {
+            return this.db.Query<dynamic>("select * from technologyCount");
+        }
+
+
 
         #region FarmersAnalysis
 

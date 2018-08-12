@@ -140,7 +140,7 @@ namespace DataAnalysis.Service.Models
         public ServerAnalysisViewModel ZNAServersAnalysis { get; set; }
         public ServerAnalysisViewModel EMEAServersAnalysis { get; set; }
         public ServerAnalysisViewModel _21stCenturyServersAnalysis { get; set; }
-
+        public dynamic globalCount { get; set; }
 
 
         public AnalysisViewModel()
@@ -170,5 +170,12 @@ namespace DataAnalysis.Service.Models
 
         }
 
+    }
+
+    public class GlobalServerCountViewModel
+    {
+        public dynamic TechnologyCount { get; set; }
+        public dynamic EnviromnetCount { get; set; }
+        public dynamic LSACount { get; set; }
     }
 }
