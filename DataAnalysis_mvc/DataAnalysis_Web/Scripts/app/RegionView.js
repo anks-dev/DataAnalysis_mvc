@@ -30,6 +30,19 @@ $(document).ready(function () {
         
     });
 
+    $("#regionSelector").change(function () {
+        console.log("Server Type changed")
+        var selectedValue = this.options[this.selectedIndex].value;
+        if (!selectedValue) {
+            return;
+        }
+
+        regionSelected = selectedValue
+        //alert($('option:selected', this).text());
+        setServersDetailsByRegion();
+        getCompanyDetailsByRegion();
+    });
+
    
     var tooltipOptions = {
         custom: function (tooltip) {
@@ -106,7 +119,7 @@ $(document).ready(function () {
             console.log(data);
             if (data.length) {
                 companySelected = data[0];
-
+                $("#companiesSelector").html("");
                 for (var i = 0; i < data.length; i++) {
                     $("#companiesSelector").append("<option value=\"" + data[i] + "\">" + data[i] + "</option>");
                 }

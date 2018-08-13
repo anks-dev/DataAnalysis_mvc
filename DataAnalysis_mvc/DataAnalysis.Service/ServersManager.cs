@@ -130,73 +130,73 @@ namespace DataAnalysis.Service
 
         private dynamic GetLSAServersByRegion(string region)
         {
-            return this.db.Query<dynamic>("exec LsaViewTech @0", region);
+            return this.db.Query<dynamic>(";exec LsaViewTech @0", region);
         }
 
         private dynamic GetEnvironmentServersByRegion(string region)
         {
-            return this.db.Query<dynamic>("exec EnvironmentViewTech @0", region);
+            return this.db.Query<dynamic>(";exec EnvironmentViewTech @0", region);
         }
 
         private dynamic GetTechnologyServersByRgion(string region)
         {
-            return this.db.Query<dynamic>("exec RegionViewTech @0", region);
+            return this.db.Query<dynamic>(";exec RegionViewTech @0", region);
         }
 
         private dynamic GetLSAServersByRegionandCompany(string region, string company)
         {
-            return this.db.Query<dynamic>("exec ServerType_AccountViewTech @0, @1", region, company);
+            return this.db.Query<dynamic>(";exec ServerType_AccountViewTech @0, @1", region, company);
         }
 
         private dynamic GetEnvironmentServersByRegionandCompany(string region, string company)
         {
-            return this.db.Query<dynamic>("exec Environment_AccountViewTech @0, @1", region, company);
+            return this.db.Query<dynamic>(";exec Environment_AccountViewTech @0, @1", region, company);
         }
 
         private dynamic GetTechnologyServersByRgionandCompany(string region, string company)
         {
-            return this.db.Query<dynamic>("exec Region_AccountViewTech @0, @1", region, company);
+            return this.db.Query<dynamic>(";exec Region_AccountViewTech @0, @1", region, company);
         }
 
         public Dictionary<string, int> GetProdOracleServersCountByRegion(string region, string company)
         {
             return this.db.Query<dynamic>(
-                "exec [dbo].[OracleVersion_ProdView] @0, @1", region, company)
+                ";exec [dbo].[OracleVersion_ProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
         public Dictionary<string, int> GetNonProdOracleServersCountByRegion(string region, string company)
         {
             return this.db.Query<dynamic>(
-                "exec [dbo].[OracleVersion_NonProdView] @0, @1", region, company)
+                ";exec [dbo].[OracleVersion_NonProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
         public Dictionary<string, int> GetProdSqlServersCountByRegion(string region, string company)
         {
             return this.db.Query<dynamic>(
-                "exec [dbo].[SQLVersion_ProdView] @0, @1", region, company)
+                ";exec [dbo].[SQLVersion_ProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
         public Dictionary<string, int> GetNonProdSqlServersCountByRegion(string region, string company)
         {
             return this.db.Query<dynamic>(
-                "exec [dbo].[SQLVersion_NonProdView] @0, @1", region, company)
+                ";exec [dbo].[SQLVersion_NonProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
         public Dictionary<string, int> GetProdDB2ServersCountByRegion(string region, string company)
         {
             return this.db.Query<dynamic>(
-                "exec [dbo].[DB2Version_ProdView] @0, @1", region, company)
+                ";exec [dbo].[DB2Version_ProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
         public Dictionary<string, int> GetNonProdDB2ServersCountByRegion(string region, string company)
         {
             return this.db.Query<dynamic>(
-                "exec [dbo].[DB2Version_NonProdView] @0, @1", region, company)
+                ";exec [dbo].[DB2Version_NonProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
