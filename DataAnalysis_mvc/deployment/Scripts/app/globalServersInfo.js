@@ -86,10 +86,10 @@
        // $("#dataServerType").trigger('change');
 
     })
-        .fail(function (error) {
+      .fail(function (error) {
             console.log(error);
         })
-        .always(function () {
+      .always(function () {
         });
 
     function bindDataServerInfoToCharts(opts, canvas) {

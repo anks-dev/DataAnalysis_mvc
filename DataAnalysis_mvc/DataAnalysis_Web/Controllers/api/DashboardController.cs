@@ -42,6 +42,12 @@ namespace DataAnalysis_Web.Controllers.api
             return new ServersManager().getServersByRegion(region);
         }
 
+        [Route("getanlysisdataByRegionandCompany")]
+        public dynamic GetanlysisdataByRegionandCompany(string region,string company)
+        {
+            return new ServersManager().getServersAnalysisByRegionandCompany(region,company);
+        }
+
         [Route("getInstanceInfo")]
         public dynamic GetInstanceInfo(string name)
         {

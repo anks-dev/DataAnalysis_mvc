@@ -76,22 +76,28 @@ namespace DataAnalysis.Service
             vm.ZNAServersAnalysis = this.GetZNAServersAnalysisViewModel();
             vm.EMEAServersAnalysis = this.GetEMEAServersAnalysisViewModel();
             vm._21stCenturyServersAnalysis = this.Get21CentServersAnalysisViewModel();
-            vm.globalCount = this.getGlobalServersAnalysisView();
+           
             return vm;
         }
 
-        public AnalysisViewModel getServersAnalysisByRegionandCompany(string region , string company)
+        public dynamic getServersAnalysisByRegionandCompany(string region, string company)
         {
-            var vm = new AnalysisViewModel();
-            vm.TechnologyDetails = this.GetServersTechnologyDetails();
-            vm.EnvironmentDetails = this.GetServersEnvironmentDetails();
-            vm.LSADetails = this.GetServersLSADetails();
-            vm.FarmersAnalysis = this.GetFarmerAnalysisViewModel();
-            vm.ZNAServersAnalysis = this.GetZNAServersAnalysisViewModel();
-            vm.EMEAServersAnalysis = this.GetEMEAServersAnalysisViewModel();
-            vm._21stCenturyServersAnalysis = this.Get21CentServersAnalysisViewModel();
-            vm.globalCount = this.getGlobalServersAnalysisView();
-            return vm;
+            return new
+            {
+                TechnologyCount = this.GetTechnologyServersByRgionandCompany(region,company),
+                EnviromnetCount = this.GetEnvironmentServersByRegionandCompany(region, company),
+                LSACount = this.GetLSAServersByRegionandCompany(region,company),
+
+                OracleServersProd = this.GetProdOracleServersCountByRegionandCompany(region,company),
+                OracleServersNonProd = this.GetNonProdOracleServersCountByRegionandCompany(region, company),
+
+                SqlServersProd = this.GetProdSqlServersCountByRegionandCompany(region, company),
+                SqlServersNonProd = this.GetNonProdSqlServersCountByRegionandCompany(region, company),
+
+                DB2ServersProd = this.GetProdDB2ServersCountByRegionandCompany(region, company),
+                DB2ServersNonProd = this.GetNonProdDB2ServersCountByRegionandCompany(region, company),               
+               
+            };
         }
 
         public dynamic getGlobalServersAnalysisView()
@@ -117,6 +123,7 @@ namespace DataAnalysis.Service
         {
             return this.db.Query<dynamic>("select * from technologyCount");
         }
+
 
         public dynamic getServersByRegion(string region)
         {
@@ -158,42 +165,42 @@ namespace DataAnalysis.Service
             return this.db.Query<dynamic>(";exec Region_AccountViewTech @0, @1", region, company);
         }
 
-        public Dictionary<string, int> GetProdOracleServersCountByRegion(string region, string company)
+        public Dictionary<string, int> GetProdOracleServersCountByRegionandCompany(string region, string company)
         {
             return this.db.Query<dynamic>(
                 ";exec [dbo].[OracleVersion_ProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
-        public Dictionary<string, int> GetNonProdOracleServersCountByRegion(string region, string company)
+        public Dictionary<string, int> GetNonProdOracleServersCountByRegionandCompany(string region, string company)
         {
             return this.db.Query<dynamic>(
                 ";exec [dbo].[OracleVersion_NonProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
-        public Dictionary<string, int> GetProdSqlServersCountByRegion(string region, string company)
+        public Dictionary<string, int> GetProdSqlServersCountByRegionandCompany(string region, string company)
         {
             return this.db.Query<dynamic>(
                 ";exec [dbo].[SQLVersion_ProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
-        public Dictionary<string, int> GetNonProdSqlServersCountByRegion(string region, string company)
+        public Dictionary<string, int> GetNonProdSqlServersCountByRegionandCompany(string region, string company)
         {
             return this.db.Query<dynamic>(
                 ";exec [dbo].[SQLVersion_NonProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
-        public Dictionary<string, int> GetProdDB2ServersCountByRegion(string region, string company)
+        public Dictionary<string, int> GetProdDB2ServersCountByRegionandCompany(string region, string company)
         {
             return this.db.Query<dynamic>(
                 ";exec [dbo].[DB2Version_ProdView] @0, @1", region, company)
                 .ToDictionary(e => (string)e.Version, e => (int)e.InstanceCount);
         }
 
-        public Dictionary<string, int> GetNonProdDB2ServersCountByRegion(string region, string company)
+        public Dictionary<string, int> GetNonProdDB2ServersCountByRegionandCompany(string region, string company)
         {
             return this.db.Query<dynamic>(
                 ";exec [dbo].[DB2Version_NonProdView] @0, @1", region, company)
