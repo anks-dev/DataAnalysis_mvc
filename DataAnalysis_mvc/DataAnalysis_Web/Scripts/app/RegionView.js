@@ -12,32 +12,22 @@ var oracleServerNonProdInfoChart = {};
 var db2ServerNonProdInfoChart = {};
 var mssqlServerNonProdInfoChart = {};
 
+var regionSelected = '';
+var companySelected = '';
 
 $(document).ready(function () {
 
-    $("#dataServerType").change(function () {
+    $("#companiesSelector").change(function () {
         console.log("Server Type changed")
         var selectedValue = this.options[this.selectedIndex].value;
         if (!selectedValue) {
             return;
         }
-        selectedValue = selectedValue.toLowerCase();
+
+        companySelected = selectedValue
         //alert($('option:selected', this).text());
-
-        switch (selectedValue) {
-
-            case 'zna': bindIndividualServerData(serverAnalysisData.znaServersAnalysis);
-                break;
-
-            case 'farmers': bindIndividualServerData(serverAnalysisData.farmersAnalysis);
-                break;
-
-            case 'emea': bindIndividualServerData(serverAnalysisData.emeaServersAnalysis);
-                break;
-
-            case '21stcentury': bindIndividualServerData(serverAnalysisData._21stCenturyServersAnalysis);
-                break;
-        }
+        getIndividulaServersData();
+        
     });
 
    
@@ -82,160 +72,182 @@ $(document).ready(function () {
         }
     }
 
-    var jqxhr = $.ajax({
+     $.ajax({
         method: "GET",
-        url: "api/home/getanlysisdata",
+        url: "api/home/getregions",
 
     }).done(function (data) {
         console.log(data);
-        serverAnalysisData = data;
+        if (data.length) {
+            regionSelected = data[0];
 
-        var techDetailsCanvas = document.getElementById("TechDetailsCanvas-rg");
-        var envDetailsCanvas = document.getElementById("EnvDetailsCanvas-rg");
-        var lsaDetailsCanvas = document.getElementById("LSADetailsCanvas-rg");
-
-
-
-
-        var TechDetails = data.technologyDetails;
-        var EnvDetails = data.environmentDetails;
-        var LSADetails = data.lsaDetails;
-
-
-        var legendToggleFunction = function (e) {
-
-            if (e && e.data && e.data.chart) {
-
-
-                var chart = e.data.chart;
-                if (chart.data.datasets[0].data["tdToggle" + $(this).index()]) {
-                    chart.data.datasets[0].data["tdToggle" + $(this).index()] = false;
-                    chart.data.datasets[0].data[$(this).index()] = chart.data.datasets[0].data["tdToggleValue" + $(this).index()]
-
-                } else {
-                    chart.data.datasets[0].data["tdToggle" + $(this).index()] = true;
-                    chart.data.datasets[0].data["tdToggleValue" + $(this).index()] = chart.data.datasets[0].data[$(this).index()];
-                    chart.data.datasets[0].data[$(this).index()] = 0;
-                }
-                //   pieChart.data.datasets[0].data[$(this).index()] += 50;
-                chart.update();
-                // console.log('legend: ' + data.datasets[0].data[$(this).index()]);
+            for (var i = 0; i < data.length; i++) {               
+                $("#regionSelector").append("<option value=\"" + data[i] + "\">" + data[i] + "</option>");
             }
-        };
-        var opts
-
-        if (TechDetailsCanvas) {
-
-            opts = {};
-            opts.data = [TechDetails.oracleServersCount,
-            TechDetails.mssqlServersCount,
-            TechDetails.dB2ServersCount
-            ];
-            opts.labels = ["Orace Servers",
-                "MSSQL Servers",
-                "DB2 Servers"
-            ];
-            opts.colors = ["rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(255, 205, 86)"
-            ];
-            opts.legendCtrl = $("#tech-details-legend");
-
-            var tchartt = bindDataServerInfoToCharts(opts, techDetailsCanvas);
-
+           
+            setServersDetailsByRegion();
+            getCompanyDetailsByRegion();
         }
 
-        if (envDetailsCanvas) {
+       
 
-            opts.data = [EnvDetails.envProdCount,
-            EnvDetails.envNonProdCount,
-            ];
-            opts.labels = [
-                "Prod Servers",
-                "Non Prod Servers"
-            ];
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(255, 205, 86)"
-            ];
-            opts.legendCtrl = $("#env-details-legend");
-
-            var echartt = bindDataServerInfoToCharts(opts, envDetailsCanvas);
-
-        }
-
-        if (lsaDetailsCanvas) {
-
-
-            opts.data = [LSADetails.emeaCount,
-            LSADetails.znaCount,
-            LSADetails.farmersCount,
-            LSADetails._21CenturyCount
-            ];
-            opts.labels = [
-                "EMEA Servers",
-                "ZNA Servers",
-                "FARMERS Servers",
-                "21CENTURY Servers"
-
-            ];
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(1,132,143)",
-                "rgb(245, 185, 76)"
-            ];
-            opts.legendCtrl = $("#lsa-details-legend");
-
-            var echartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
-
-
-
-            //var serverCountData = {
-            //    labels: [
-            //        "EMEA Servers",
-            //        "ZNA Servers",
-            //        "FARMERS Servers",
-            //        "21CENTURY Servers"
-
-            //    ],
-            //    datasets: [
-            //        {
-            //            data: [LSADetails.eMEACount,
-            //                LSADetails.zNACount,
-            //                LSADetails.framersCount,
-            //                 LSADetails._21CenturyCount                                     
-            //            ],
-            //            backgroundColor: [
-            //                "rgb(255, 99, 132)",
-            //                "rgb(54, 162, 235)",
-            //                "rgb(255, 205, 86)",
-            //                "rgb(245, 185, 76)"
-            //            ]
-            //        }]
-            //};              
-
-            //var lsaPieChart = new Chart(lsaDetailsCanvas, {
-            //    type: 'doughnutLabels',
-            //    data: serverCountData,                 
-            //    options: otherOptions
-
-            //});
-            //$("#lsa-details-legend").html(lsaPieChart.generateLegend());
-            //$("#lsa-details-legend").on('click', "li", { chart:lsaPieChart},legendToggleFunction);
-
-        }
-
-        $("#dataServerType").trigger('change');
-
-    })
-        .fail(function (error) {
+    }).fail(function (error) {
             console.log(error);
-        })
-        .always(function () {
         });
 
+    function getCompanyDetailsByRegion() {
+        var params = { region: regionSelected };
+        $.ajax({
+            method: "GET",
+            url: "api/home/getCompanyByRegion",
+            data: params
+
+        }).done(function (data) {
+            console.log(data);
+            if (data.length) {
+                companySelected = data[0];
+
+                for (var i = 0; i < data.length; i++) {
+                    $("#companiesSelector").append("<option value=\"" + data[i] + "\">" + data[i] + "</option>");
+                }
+
+                
+            }
+
+           
+
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
+
+    function getIndividulaServersData() {
+        var params = { region: regionSelected, company: companySelected };
+
+
+        $.ajax({
+            method: "GET",
+            url: "api/home/getIndividualServersCountByRegion",
+            data: params
+
+        }).done(function (data) {
+            console.log(data);
+            serverAnalysisData = data;                       
+
+        })
+            .fail(function (error) {
+                console.log(error);
+            })
+            .always(function () {
+            }); 
+    }
+
+    function setServersDetailsByRegion() {
+        var params = { region: regionSelected };
+
+
+        $.ajax({
+            method: "GET",
+            url: "api/home/getServersCountByRegion",
+            data: params
+
+        }).done(function (data) {
+            console.log(data);
+            serverAnalysisData = data;
+
+            let techDetailsCanvas = document.getElementById("TechDetailsCanvas-rg");
+            let envDetailsCanvas = document.getElementById("EnvDetailsCanvas-rg");
+            let lsaDetailsCanvas = document.getElementById("LSADetailsCanvas-rg");
+
+
+
+
+           let TechDetails = data.technologyDetails;
+           let EnvDetails = data.environmentDetails;
+           let LSADetails = data.lsaDetails;
+
+
+            var legendToggleFunction = function (e) {
+
+                if (e && e.data && e.data.chart) {
+
+
+                    var chart = e.data.chart;
+                    if (chart.data.datasets[0].data["tdToggle" + $(this).index()]) {
+                        chart.data.datasets[0].data["tdToggle" + $(this).index()] = false;
+                        chart.data.datasets[0].data[$(this).index()] = chart.data.datasets[0].data["tdToggleValue" + $(this).index()]
+
+                    } else {
+                        chart.data.datasets[0].data["tdToggle" + $(this).index()] = true;
+                        chart.data.datasets[0].data["tdToggleValue" + $(this).index()] = chart.data.datasets[0].data[$(this).index()];
+                        chart.data.datasets[0].data[$(this).index()] = 0;
+                    }
+                    //   pieChart.data.datasets[0].data[$(this).index()] += 50;
+                    chart.update();
+                    // console.log('legend: ' + data.datasets[0].data[$(this).index()]);
+                }
+            };
+            var opts
+
+            if (TechDetailsCanvas) {
+
+                opts = {};
+                opts.data = data.technologyCount.map(c => Object.values(c)[1]);
+                opts.labels = data.technologyCount.map(c => Object.values(c)[0] + 'Servers (' + Object.values(c)[1] + ')');
+
+                opts.colors = ["rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)",
+                    "rgb(255, 205, 86)"
+                ];
+                opts.legendCtrl = $("#tech-details-legend-rg");
+
+                var tchartt = bindDataServerInfoToCharts(opts, techDetailsCanvas);
+
+            }
+
+            if (envDetailsCanvas) {
+
+                opts.data = data.enviromnetCount.map(c => Object.values(c)[1]);
+                opts.labels = data.enviromnetCount.map(c => Object.values(c)[0] + 'Servers(' + Object.values(c)[1] + ')');
+
+                opts.colors = [
+                    "rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)",
+                    "rgb(255, 205, 86)"
+                ];
+                opts.legendCtrl = $("#env-details-legend-rg");
+
+                var echartt = bindDataServerInfoToCharts(opts, envDetailsCanvas);
+
+            }
+
+            if (lsaDetailsCanvas) {
+
+
+                opts.data = data.lsaCount.map(c => Object.values(c)[1]);
+                opts.labels = data.lsaCount.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
+
+                opts.colors = [
+                    "rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)",
+                    "rgb(1,132,143)",
+                    "rgb(245, 185, 76)"
+                ];
+                opts.legendCtrl = $("#lsa-details-legend-rg");
+
+                var echartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
+
+            }
+
+            $("#dataServerType").trigger('change');
+
+        })
+            .fail(function (error) {
+                console.log(error);
+            })
+            .always(function () {
+            });
+    }
     function bindDataServerInfoToCharts(opts, canvas) {
 
         var otherOptions = {
@@ -635,8 +647,6 @@ $(document).ready(function () {
         canvasCharts.push(mssqlServerNonProdInfoChart);;
 
     }
-
-
 
 })
 

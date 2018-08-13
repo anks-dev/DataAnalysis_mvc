@@ -118,7 +118,7 @@ namespace DataAnalysis.Service
             return this.db.Query<dynamic>("select * from technologyCount");
         }
 
-        public dynamic getServersAnalysisByRegion(string region)
+        public dynamic getServersByRegion(string region)
         {
             return new
             {

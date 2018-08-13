@@ -12,6 +12,18 @@ namespace DataAnalysis_Web.Controllers.api
     [RoutePrefix("api/home")]
     public class DashboardController : ApiController
     {
+        [Route("getregions")]
+        public dynamic Getregions()
+        {
+            return new ServersManager().GetRegions();
+        }
+
+        [Route("getCompanyByRegion")]
+        public dynamic Getregions(string region)
+        {
+            return new ServersManager().GetCompaniesByRegion(region);
+        }
+
         [Route("getanlysisdata")]
         public dynamic Getanlysisdata()
         {
@@ -24,6 +36,11 @@ namespace DataAnalysis_Web.Controllers.api
             return new ServersManager().getGlobalServersAnalysisView();
         }
 
+        [Route("getServersCountByRegion")]
+        public dynamic GetServersCountByRegion(string region)
+        {
+            return new ServersManager().getServersByRegion(region);
+        }
 
         [Route("getInstanceInfo")]
         public dynamic GetInstanceInfo(string name)
@@ -35,65 +52,12 @@ namespace DataAnalysis_Web.Controllers.api
         public dynamic GetInstancesList(string version, string company)
         {
             return new InstanceInfoManager().GetInstancesList(version, company);
-        }
-
-        //[Route("getserverssummaries")]
-        //public dynamic Getserverssummaries(string version, string company)
-        //{
-        //    return new ServersManager().getSeverSummaries();
-        //}
+        }       
 
         [Route("getsummaries")]
         public dynamic Getsummaries()
         {
             return new ServersManager().getSummaries();
-        }
-
-
-
-
-
-
-        //        Get["/"] = parameters =>
-        //            {
-        //                return View["index"];
-        //            };
-
-        //    Get["/getanlysisdata"] = parameters =>
-        //            {
-
-        //                var mg = new ServersManager();
-        //                return Response.AsJson(mg.getServersAnalysisViewModel());
-        //            };
-
-        //Get["/getInstanceInfo"] = parameters =>
-        //            {
-
-        //               var name = this.Request.Query["name"];
-        //var mg = new InstanceInfoManager();
-        //                return mg.GetInstanceByName(name);
-        //            };
-
-        //            Get["/getInstancesList"] = parameters =>
-        //            {
-
-        //                var version = this.Request.Query["version"];
-        //var company = this.Request.Query["company"];
-        //var mg = new InstanceInfoManager();
-        //                return mg.GetInstancesList(version, company);
-        //            };
-
-        //            Get["/getserverssummaries"] = parameters =>
-        //            {
-        //                var mg = new ServersManager();
-        //                return Response.AsJson(mg.getSeverSummaries());                
-        //            };
-
-        //            Get["/getsummaries"] = parameters =>
-        //            {
-        //                var mg = new ServersManager();
-        //                return mg.getSummaries();
-        //            }; 
-
+        }    
     }
 }
