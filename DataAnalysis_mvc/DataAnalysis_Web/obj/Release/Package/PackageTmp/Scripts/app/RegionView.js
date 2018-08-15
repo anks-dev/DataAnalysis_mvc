@@ -366,11 +366,6 @@ $(document).ready(function () {
         //})
 
 
-
-       
-
-
-
         let techDetailsCanvas = document.getElementById("serverTechDetailsCanvas-Byrnc")
         let envDetailsCanvas = document.getElementById("serverEnvDetailsCanvas-Byrnc")
         let serverTypeDetailsCanvas = document.getElementById("serverTypeDetailsCanvas-Byrnc")
@@ -447,31 +442,24 @@ $(document).ready(function () {
             instanceServerTypeInfoChart = bindDataServerInfoToCharts(opts, serverTypeDetailsCanvas);
             
         }
-
+        debugger;
         if (prodSqlServersCanvas && data.sqlServersProd) {
 
             $(prodSqlServersCanvas).parent().show();
 
-            var values = Object.values(data.sqlServersProd);
-            var options = setTicks(values, barOptions);
+            
 
-            var dataset = {
-                label: ' SQL Servers Count',
-                data: Object.values(data.sqlServersProd),
-                backgroundColor: prodColor,
-                borderColor: pordBorderColor,
-                borderWidth: 1
+            opts.data = data.sqlServersProd.map(c => Object.values(c)[1]);
+            opts.labels = data.sqlServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
 
-            };
+            opts.colors = [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(245, 185, 76)"
+            ];
+            opts.legendCtrl = $("#sql-servers-prod-legend-Byrnc");
 
-            mssqlServerProdInfoChart = new Chart(prodSqlServersCanvas, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.sqlServersProd),
-                    datasets: [dataset]
-                },
-                options: options
-            });
+            mssqlServerProdInfoChart = bindDataServerInfoToCharts(opts, prodSqlServersCanvas);
 
         } else {
             $(prodSqlServersCanvas).parent().hide();
@@ -479,53 +467,35 @@ $(document).ready(function () {
 
         if (prodDB2ServersCanvas && data.dB2ServersProd) {
 
-            var values = Object.values(data.dB2ServersProd);
-            var options = setTicks(values, barOptions);
+            opts.data = data.dB2ServersProd.map(c => Object.values(c)[1]);
+            opts.labels = data.dB2ServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
 
-            $(prodDB2ServersCanvas).parent().show();
+            opts.colors = [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(245, 185, 76)"
+            ];
+            opts.legendCtrl = $("#db2-servers-prod-legend");
 
+            db2ServerProdInfoChart = bindDataServerInfoToCharts(opts, prodDB2ServersCanvas);
 
-            var dataset = {
-                label: ' DB2 Servers Count',
-                backgroundColor: prodColor,
-                borderColor: pordBorderColor,
-                data: values
-            };
-
-            db2ServerProdInfoChart = new Chart(prodDB2ServersCanvas, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.dB2ServersProd),
-                    datasets: [dataset]
-                },
-                options: options
-            });
         } else {
             $(prodDB2ServersCanvas).parent().hide();
         }
 
         if (prodOracleServersCanvas && data.oracleServersProd) {
 
-            var values = Object.values(data.oracleServersProd);
-            var options = setTicks(values, barOptions);
-            $(prodOracleServersCanvas).parent().show();
-            var dataset = {
-                label: ' ORACLE Servers Count',
-                backgroundColor: prodColor,
-                borderColor: pordBorderColor,
-                data: Object.values(data.oracleServersProd)
-            };
+            opts.data = data.oracleServersProd.map(c => Object.values(c)[1]);
+            opts.labels = data.oracleServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
 
-            oracleServerProdInfoChart = new Chart(prodOracleServersCanvas, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.oracleServersProd),
-                    datasets: [dataset]
-                },
-                options: options
-            });
+            opts.colors = [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(245, 185, 76)"
+            ];
+            opts.legendCtrl = $("#oracle-servers-prod-legend");
 
-
+            oracleServerProdInfoChart = bindDataServerInfoToCharts(opts, prodOracleServersCanvas);
 
         } else {
             $(prodOracleServersCanvas).parent().hide();
@@ -534,27 +504,22 @@ $(document).ready(function () {
 
         if (nonProdSqlServersCanvas && data.sqlServersNonProd) {
 
-            var values = Object.values(data.sqlServersNonProd);
-            var options = setTicks(values, barOptions);
+            
+            $(nonProdSqlServersCanvas).parent().show();            
 
-            $(nonProdSqlServersCanvas).parent().show();
+            opts.data = data.sqlServersNonProd.map(c => Object.values(c)[1]);
+            opts.labels = data.sqlServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
 
-            var dataset = {
-                label: ' Non Prod SQL Servers Count',
-                data: Object.values(data.sqlServersNonProd),
-                backgroundColor: nonProdColor,
-                borderColor: nonPordBorderColor,
-                borderWidth: 1
+            opts.colors = [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(245, 185, 76)"
+            ];
+            opts.legendCtrl = $("#sql-servers-nonprod-legend-Byrnc");
 
-            };
-            mssqlServerNonProdInfoChart = new Chart(nonProdSqlServersCanvas, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.sqlServersNonProd),
-                    datasets: [dataset]
-                },
-                options: options
-            });
+            mssqlServerProdInfoChart = bindDataServerInfoToCharts(opts, nonProdSqlServersCanvas);
+
+
 
         } else {
             $(nonProdSqlServersCanvas).parent().hide();
@@ -564,21 +529,19 @@ $(document).ready(function () {
 
             $(nonProdDB2ServersCanvas).parent().show();
 
-            var dataset = {
-                label: ' Non Prod DB2 Servers Count',
-                backgroundColor: nonProdColor,
-                borderColor: nonPordBorderColor,
-                data: Object.values(data.dB2ServersNonProd)
-            };
+            opts.data = data.dB2ServersNonProd.map(c => Object.values(c)[1]);
+            opts.labels = data.dB2ServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
 
-            db2ServerNonProdInfoChart = new Chart(nonProdDB2ServersCanvas, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.dB2ServersNonProd),
-                    datasets: [dataset]
-                },
-                options: barOptions
-            });
+            opts.colors = [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(245, 185, 76)"
+            ];
+            opts.legendCtrl = $("#db2-servers-nonprod-legend");
+
+            db2ServerNonProdInfoChart = bindDataServerInfoToCharts(opts, nonProdDB2ServersCanvas);
+
+            
         } else {
             $(nonProdDB2ServersCanvas).parent().hide();
         }
@@ -586,21 +549,21 @@ $(document).ready(function () {
         if (nonProdOracleServersCanvas && data.oracleServersNonProd) {
 
             $(nonProdOracleServersCanvas).parent().show();
-            var dataset = {
-                label: ' Non Prod ORACLE Servers Count',
-                backgroundColor: nonProdColor,
-                borderColor: nonPordBorderColor,
-                data: Object.values(data.oracleServersNonProd)
-            };
 
-            oracleServerNonProdInfoChart = new Chart(nonProdOracleServersCanvas, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.oracleServersNonProd),
-                    datasets: [dataset]
-                },
-                options: barOptions
-            });
+
+            opts.data = data.dB2ServersNonProd.map(c => Object.values(c)[1]);
+            opts.labels = data.dB2ServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
+
+            opts.colors = [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(245, 185, 76)"
+            ];
+            opts.legendCtrl = $("#oracle-servers-nonprod-legend");
+
+            oracleServerNonProdInfoChart = bindDataServerInfoToCharts(opts, nonProdOracleServersCanvas);
+
+            
 
 
 

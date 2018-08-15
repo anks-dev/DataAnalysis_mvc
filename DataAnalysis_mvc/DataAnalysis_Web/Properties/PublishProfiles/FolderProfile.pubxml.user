@@ -22,19 +22,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="bin/DataAnalysis.Service.dll">
-      <publishTime>08/13/2018 10:06:56</publishTime>
+      <publishTime>08/16/2018 00:12:16</publishTime>
     </File>
     <File Include="bin/DataAnalysis.Service.dll.config">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="bin/DataAnalysis.Service.pdb">
-      <publishTime>08/13/2018 10:06:56</publishTime>
+      <publishTime>08/16/2018 00:12:16</publishTime>
     </File>
     <File Include="bin/DataAnalysis_Web.dll">
-      <publishTime>08/13/2018 10:07:01</publishTime>
+      <publishTime>08/16/2018 00:12:21</publishTime>
     </File>
     <File Include="bin/DataAnalysis_Web.pdb">
-      <publishTime>08/13/2018 10:07:01</publishTime>
+      <publishTime>08/16/2018 00:12:21</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>08/11/2018 23:33:08</publishTime>
@@ -535,16 +535,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Scripts/app/dashboard.js">
-      <publishTime>08/12/2018 10:13:26</publishTime>
+      <publishTime>08/15/2018 22:36:52</publishTime>
     </File>
     <File Include="Scripts/app/globalServersInfo.js">
-      <publishTime>08/12/2018 21:14:50</publishTime>
+      <publishTime>08/15/2018 22:35:10</publishTime>
     </File>
     <File Include="Scripts/app/instanceInfo.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Scripts/app/RegionView.js">
-      <publishTime>08/13/2018 10:03:10</publishTime>
+      <publishTime>08/15/2018 23:47:56</publishTime>
     </File>
     <File Include="Scripts/app/searchInstance.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
@@ -772,7 +772,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Views/Shared/_RegionViewTab.cshtml">
-      <publishTime>08/13/2018 09:55:02</publishTime>
+      <publishTime>08/15/2018 23:52:22</publishTime>
     </File>
     <File Include="Views/Shared/_SearchTab.cshtml">
       <publishTime>08/11/2018 23:33:06</publishTime>
