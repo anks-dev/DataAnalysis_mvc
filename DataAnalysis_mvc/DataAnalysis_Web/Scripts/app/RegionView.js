@@ -1,19 +1,36 @@
 ﻿var serverAnalysisData = {};
-var canvasCharts = [];
-var instanceServerTechInfoChart = {};
+var regionCharts = [];
+var techInfoChartByRegionandCompany = {};
 var instanceServerEnvInfoChart = {};
 var instanceServerTypeInfoChart = {};
 
-var oracleServerProdInfoChart = {};
-var db2ServerProdInfoChart = {};
-var mssqlServerProdInfoChart = {};
+var prodOracleServersInfoChart = {};
+var prodDB2ServerInfoChart = {};
+var prodSqlServersByRNC = {};
 
-var oracleServerNonProdInfoChart = {};
+var nonProdOracleServersInfoChart = {};
 var db2ServerNonProdInfoChart = {};
-var mssqlServerNonProdInfoChart = {};
+var nonProdSqlServersByRNC = {};
 
 var regionSelected = '';
 var companySelected = '';
+
+function getColorPallate(n) {
+
+    if (n <= 0) {
+        return [];
+    }
+
+    let colorpallet = [];
+    var h = -36;
+    for (let n = 0; n < 10; n++) {
+        var color = new KolorWheel([h, 100, 50]);
+        colorpallet.push(color.getHex());
+        console.log("color: " + color)
+        h += 45;
+    } // for hue
+    return colorpallet;
+}
 
 $(document).ready(function () {
 
@@ -249,7 +266,7 @@ $(document).ready(function () {
                 ];
                 opts.legendCtrl = $("#lsa-details-legend-rg");
 
-                var echartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
+                var lsachartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
 
             }
 
@@ -382,7 +399,18 @@ $(document).ready(function () {
         //    clearCanvas(this);
         //})
 
+        $('.chartsByRegionAndCompany canvas').each(function (index, item) {
+           // clearCanvas(this);
 
+            regionCharts.forEach(function (item, index) {
+                debugger;               
+                if (item && item.destroy) {
+                    item.destroy();
+                }
+
+            })
+
+        })
 
 
         var techDetails = data.technologyCount;
@@ -406,7 +434,7 @@ $(document).ready(function () {
             ];
             opts.legendCtrl = $("#server-tech-details-legend-Byrnc");
 
-            instanceServerTechInfoChart = bindDataServerInfoToCharts(opts, techDetailsCanvas);
+            techInfoChartByRegionandCompany = bindDataServerInfoToCharts(opts, techDetailsCanvas);
 
         }
 
@@ -442,7 +470,7 @@ $(document).ready(function () {
             instanceServerTypeInfoChart = bindDataServerInfoToCharts(opts, serverTypeDetailsCanvas);
             
         }
-        debugger;
+        
         if (prodSqlServersCanvas && data.sqlServersProd) {
 
             $(prodSqlServersCanvas).parent().show();
@@ -451,15 +479,16 @@ $(document).ready(function () {
 
             opts.data = data.sqlServersProd.map(c => Object.values(c)[1]);
             opts.labels = data.sqlServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
+            
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
                 "rgb(245, 185, 76)"
             ];
+            opts.colors = getColorPallate(opts.data.length);
             opts.legendCtrl = $("#sql-servers-prod-legend-Byrnc");
 
-            mssqlServerProdInfoChart = bindDataServerInfoToCharts(opts, prodSqlServersCanvas);
+            prodSqlServersByRNC = bindDataServerInfoToCharts(opts, prodSqlServersCanvas);
 
         } else {
             $(prodSqlServersCanvas).parent().hide();
@@ -476,7 +505,7 @@ $(document).ready(function () {
                 "rgb(245, 185, 76)"
             ];
             opts.legendCtrl = $("#db2-servers-prod-legend");
-
+            opts.colors = getColorPallate(opts.data.length);
             db2ServerProdInfoChart = bindDataServerInfoToCharts(opts, prodDB2ServersCanvas);
 
         } else {
@@ -494,8 +523,8 @@ $(document).ready(function () {
                 "rgb(245, 185, 76)"
             ];
             opts.legendCtrl = $("#oracle-servers-prod-legend");
-
-            oracleServerProdInfoChart = bindDataServerInfoToCharts(opts, prodOracleServersCanvas);
+            opts.colors = getColorPallate(opts.data.length);
+            prodOracleServersInfoChart = bindDataServerInfoToCharts(opts, prodOracleServersCanvas);
 
         } else {
             $(prodOracleServersCanvas).parent().hide();
@@ -516,8 +545,8 @@ $(document).ready(function () {
                 "rgb(245, 185, 76)"
             ];
             opts.legendCtrl = $("#sql-servers-nonprod-legend-Byrnc");
-
-            mssqlServerProdInfoChart = bindDataServerInfoToCharts(opts, nonProdSqlServersCanvas);
+            opts.colors = getColorPallate(opts.data.length);
+            nonProdSqlServersByRNC = bindDataServerInfoToCharts(opts, nonProdSqlServersCanvas);
 
 
 
@@ -538,7 +567,7 @@ $(document).ready(function () {
                 "rgb(245, 185, 76)"
             ];
             opts.legendCtrl = $("#db2-servers-nonprod-legend");
-
+            opts.colors = getColorPallate(opts.data.length);
             db2ServerNonProdInfoChart = bindDataServerInfoToCharts(opts, nonProdDB2ServersCanvas);
 
             
@@ -560,12 +589,9 @@ $(document).ready(function () {
                 "rgb(245, 185, 76)"
             ];
             opts.legendCtrl = $("#oracle-servers-nonprod-legend");
-
-            oracleServerNonProdInfoChart = bindDataServerInfoToCharts(opts, nonProdOracleServersCanvas);
-
+            opts.colors = getColorPallate(opts.data.length);
+            nonProdOracleServersInfoChart = bindDataServerInfoToCharts(opts, nonProdOracleServersCanvas);
             
-
-
 
         } else {
             $(nonProdOracleServersCanvas).parent().hide();
@@ -573,17 +599,17 @@ $(document).ready(function () {
 
 
 
-        canvasCharts.push(instanceServerTechInfoChart);
-        canvasCharts.push(instanceServerEnvInfoChart);
-        canvasCharts.push(instanceServerTypeInfoChart);;
+        regionCharts.push(techInfoChartByRegionandCompany);
+        regionCharts.push(instanceServerEnvInfoChart);
+        regionCharts.push(instanceServerTypeInfoChart);;
 
-        canvasCharts.push(oracleServerProdInfoChart);;
-        canvasCharts.push(db2ServerProdInfoChart);;
-        canvasCharts.push(mssqlServerProdInfoChart);;
+        regionCharts.push(prodOracleServersInfoChart);;
+        regionCharts.push(db2ServerProdInfoChart);;
+        regionCharts.push(prodSqlServersByRNC);;
 
-        canvasCharts.push(oracleServerNonProdInfoChart);;
-        canvasCharts.push(db2ServerNonProdInfoChart);;
-        canvasCharts.push(mssqlServerNonProdInfoChart);;
+        regionCharts.push(nonProdOracleServersInfoChart);;
+        regionCharts.push(db2ServerNonProdInfoChart);;
+        regionCharts.push(nonProdSqlServersByRNC);;
 
     }
 

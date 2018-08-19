@@ -253,6 +253,7 @@
     <Content Include="Scripts\app\RegionView.js" />
     <Content Include="Scripts\app\searchInstance.js" />
     <Content Include="Scripts\app\summary.js" />
+    <Content Include="Scripts\AvArray.js" />
     <Content Include="Scripts\bootstrap-material-design.js" />
     <Content Include="Scripts\bootstrap-material-design.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -316,11 +317,14 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout.js" />
+    <Content Include="Scripts\KolorWheel.js" />
+    <Content Include="Scripts\KolorWheel.min.js" />
     <Content Include="Scripts\mdb.js" />
     <Content Include="Scripts\mdb.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\spectrum.js" />
     <Content Include="Scripts\vectormap-data\africa.js" />
     <Content Include="Scripts\vectormap-data\canada.js" />
     <Content Include="Scripts\vectormap-data\eurasia.js" />
