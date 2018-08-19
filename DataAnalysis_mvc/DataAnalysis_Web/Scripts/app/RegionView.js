@@ -4,6 +4,15 @@ var techInfoChartByRegionandCompany = {};
 var instanceServerEnvInfoChart = {};
 var instanceServerTypeInfoChart = {};
 
+
+var lsachartt = {};
+var echartt = {};
+var tchartt = {};
+
+var techInfoByRNC = {};
+var envDetailsByRNC = {};
+var serverDetailsByRNC = {};
+
 var prodOracleServersInfoChart = {};
 var prodDB2ServerInfoChart = {};
 var prodSqlServersByRNC = {};
@@ -22,14 +31,96 @@ function getColorPallate(n) {
     }
 
     let colorpallet = [];
-    var h = -36;
+    var h = -45;
     for (let n = 0; n < 10; n++) {
         var color = new KolorWheel([h, 100, 50]);
         colorpallet.push(color.getHex());
-        console.log("color: " + color)
+        console.log(color);
         h += 45;
     } // for hue
     return colorpallet;
+}
+
+function toggleLegend(el) {
+    $(el).toggleClass("strikeoff");
+}
+function bindDataServerInfoToCharts(opts, canvas) {
+
+    var otherOptions = {
+        animation: {
+            animateRotate: true,
+            animateScale: true
+        },
+        legend: false,
+        legendCallback: function (chart) {
+            var text = [];
+            text.push('<ul  class=list-unstyled "' + chart.id + '-legend">');
+            for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
+                text.push('<li onclick="toggleLegend(this)" class="legend" role="button" data-toggle="button" aria-pressed="false" autocomplete="off" ><span class="legend-icon" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"></span><span class="legend-text">');
+                if (chart.data.labels[i]) {
+                    text.push(chart.data.labels[i]);
+                }
+                text.push('</span></li>');
+            }
+            text.push('</ul>');
+            return text.join("");
+        }
+    }
+
+
+    var legendToggleFunction = function (e) {
+
+        if (e && e.data && e.data.chart) {
+
+
+            var chart = e.data.chart;
+            if (chart.data.datasets[0].data["tdToggle" + $(this).index()]) {
+                chart.data.datasets[0].data["tdToggle" + $(this).index()] = false;
+                chart.data.datasets[0].data[$(this).index()] = chart.data.datasets[0].data["tdToggleValue" + $(this).index()]
+
+            } else {
+                chart.data.datasets[0].data["tdToggle" + $(this).index()] = true;
+                chart.data.datasets[0].data["tdToggleValue" + $(this).index()] = chart.data.datasets[0].data[$(this).index()];
+                chart.data.datasets[0].data[$(this).index()] = 0;
+            }
+            //   pieChart.data.datasets[0].data[$(this).index()] += 50;
+            chart.update();
+            // console.log('legend: ' + data.datasets[0].data[$(this).index()]);
+        }
+    };
+
+    if (canvas) {
+        Chart.defaults.global.defaultFontFamily = "Lato";
+        Chart.defaults.global.defaultFontSize = 18;
+
+
+
+        var chartData = {
+            labels: opts.labels,
+            datasets: [
+                {
+                    data: opts.data,
+                    backgroundColor: opts.colors
+                }]
+        };
+
+        var donutChart = new Chart(canvas, {
+            type: 'doughnutLabels',
+            data: chartData,
+            options: otherOptions
+
+        });
+        $(opts.legendCtrl).html(donutChart.generateLegend());
+        $(opts.legendCtrl).on('click', "li", { chart: donutChart }, legendToggleFunction);
+
+        return donutChart;
+
+    } else {
+        return null;
+    }
+
+
+
 }
 
 $(document).ready(function () {
@@ -232,7 +323,7 @@ $(document).ready(function () {
                 ];
                 opts.legendCtrl = $("#tech-details-legend-rg");
 
-                var tchartt = bindDataServerInfoToCharts(opts, techDetailsCanvas);
+                 tchartt = bindDataServerInfoToCharts(opts, techDetailsCanvas);
 
             }
 
@@ -248,7 +339,7 @@ $(document).ready(function () {
                 ];
                 opts.legendCtrl = $("#env-details-legend-rg");
 
-                var echartt = bindDataServerInfoToCharts(opts, envDetailsCanvas);
+                 echartt = bindDataServerInfoToCharts(opts, envDetailsCanvas);
 
             }
 
@@ -266,7 +357,7 @@ $(document).ready(function () {
                 ];
                 opts.legendCtrl = $("#lsa-details-legend-rg");
 
-                var lsachartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
+                 lsachartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
 
             }
 
@@ -279,84 +370,7 @@ $(document).ready(function () {
             .always(function () {
             });
     }
-    function bindDataServerInfoToCharts(opts, canvas) {
 
-        var otherOptions = {
-            animation: {
-                animateRotate: true,
-                animateScale: true
-            },
-            legend: false,
-            legendCallback: function (chart) {
-                var text = [];
-                text.push('<ul  class=list-unstyled "' + chart.id + '-legend">');
-                for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
-                    text.push('<li onclick="toggleLegend(this)" class="legend" role="button" data-toggle="button" aria-pressed="false" autocomplete="off" ><span class="legend-icon" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"></span><span class="legend-text">');
-                    if (chart.data.labels[i]) {
-                        text.push(chart.data.labels[i]);
-                    }
-                    text.push('</span></li>');
-                }
-                text.push('</ul>');
-                return text.join("");
-            }
-        }
-
-
-        var legendToggleFunction = function (e) {
-
-            if (e && e.data && e.data.chart) {
-
-
-                var chart = e.data.chart;
-                if (chart.data.datasets[0].data["tdToggle" + $(this).index()]) {
-                    chart.data.datasets[0].data["tdToggle" + $(this).index()] = false;
-                    chart.data.datasets[0].data[$(this).index()] = chart.data.datasets[0].data["tdToggleValue" + $(this).index()]
-
-                } else {
-                    chart.data.datasets[0].data["tdToggle" + $(this).index()] = true;
-                    chart.data.datasets[0].data["tdToggleValue" + $(this).index()] = chart.data.datasets[0].data[$(this).index()];
-                    chart.data.datasets[0].data[$(this).index()] = 0;
-                }
-                //   pieChart.data.datasets[0].data[$(this).index()] += 50;
-                chart.update();
-                // console.log('legend: ' + data.datasets[0].data[$(this).index()]);
-            }
-        };
-
-        if (canvas) {
-            Chart.defaults.global.defaultFontFamily = "Lato";
-            Chart.defaults.global.defaultFontSize = 18;
-
-
-
-            var chartData = {
-                labels: opts.labels,
-                datasets: [
-                    {
-                        data: opts.data,
-                        backgroundColor: opts.colors
-                    }]
-            };
-
-            var donutChart = new Chart(canvas, {
-                type: 'doughnutLabels',
-                data: chartData,
-                options: otherOptions
-
-            });
-            $(opts.legendCtrl).html(donutChart.generateLegend());
-            $(opts.legendCtrl).on('click', "li", { chart: donutChart }, legendToggleFunction);
-
-            return donutChart;
-
-        } else {
-            return null;
-        }
-
-
-
-    }
 
     function setTicks(data, barOptions) {
         var options = Object.assign({}, barOptions);
@@ -374,13 +388,13 @@ $(document).ready(function () {
             return;
         }
 
-        //canvasCharts.forEach(function (item, index) {
+        regionCharts.forEach(function (item, index) {
 
-        //    if (item && item.destroy) {
-        //        item.destroy();
-        //    }
+            if (item && item.destroy) {
+                item.destroy();
+            }
 
-        //})
+        })
 
 
         let techDetailsCanvas = document.getElementById("serverTechDetailsCanvas-Byrnc")
@@ -395,23 +409,10 @@ $(document).ready(function () {
         let nonProdDB2ServersCanvas = document.getElementById("nonProdDB2ServersCanvas-Byrnc")
         let nonProdOracleServersCanvas = document.getElementById("nonProdOracleServersCanvas-Byrnc")
 
-        //$('.serverAnalysisBlock canvas').each(function (index, item) {
-        //    clearCanvas(this);
-        //})
 
         $('.chartsByRegionAndCompany canvas').each(function (index, item) {
-           // clearCanvas(this);
-
-            regionCharts.forEach(function (item, index) {
-                debugger;               
-                if (item && item.destroy) {
-                    item.destroy();
-                }
-
-            })
-
+            clearCanvas(this);
         })
-
 
         var techDetails = data.technologyCount;
         var envDetails = data.enviromnetCount;
@@ -434,7 +435,7 @@ $(document).ready(function () {
             ];
             opts.legendCtrl = $("#server-tech-details-legend-Byrnc");
 
-            techInfoChartByRegionandCompany = bindDataServerInfoToCharts(opts, techDetailsCanvas);
+             techInfoByRNC = bindDataServerInfoToCharts(opts, techDetailsCanvas);
 
         }
 
@@ -450,7 +451,7 @@ $(document).ready(function () {
             ];
             opts.legendCtrl = $("#server-env-details-legend-Byrnc");
 
-            instanceServerEnvInfoChart = bindDataServerInfoToCharts(opts, envDetailsCanvas);
+            envDetailsByRNC = bindDataServerInfoToCharts(opts, envDetailsCanvas);
 
         }
 
@@ -467,7 +468,7 @@ $(document).ready(function () {
             ];
             opts.legendCtrl = $("#server-type-details-legend-Byrnc");
 
-            instanceServerTypeInfoChart = bindDataServerInfoToCharts(opts, serverTypeDetailsCanvas);
+            serverDetailsByRNC = bindDataServerInfoToCharts(opts, serverTypeDetailsCanvas);
             
         }
         
@@ -506,7 +507,7 @@ $(document).ready(function () {
             ];
             opts.legendCtrl = $("#db2-servers-prod-legend");
             opts.colors = getColorPallate(opts.data.length);
-            db2ServerProdInfoChart = bindDataServerInfoToCharts(opts, prodDB2ServersCanvas);
+            prodDB2ServersInfoChart = bindDataServerInfoToCharts(opts, prodDB2ServersCanvas);
 
         } else {
             $(prodDB2ServersCanvas).parent().hide();
@@ -568,7 +569,7 @@ $(document).ready(function () {
             ];
             opts.legendCtrl = $("#db2-servers-nonprod-legend");
             opts.colors = getColorPallate(opts.data.length);
-            db2ServerNonProdInfoChart = bindDataServerInfoToCharts(opts, nonProdDB2ServersCanvas);
+            nonProdDB2ServersInfoChart = bindDataServerInfoToCharts(opts, nonProdDB2ServersCanvas);
 
             
         } else {
@@ -580,8 +581,8 @@ $(document).ready(function () {
             $(nonProdOracleServersCanvas).parent().show();
 
 
-            opts.data = data.dB2ServersNonProd.map(c => Object.values(c)[1]);
-            opts.labels = data.dB2ServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
+            opts.data = data.oracleServersNonProd.map(c => Object.values(c)[1]);
+            opts.labels = data.oracleServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
 
             opts.colors = [
                 "rgb(255, 99, 132)",
@@ -599,16 +600,16 @@ $(document).ready(function () {
 
 
 
-        regionCharts.push(techInfoChartByRegionandCompany);
-        regionCharts.push(instanceServerEnvInfoChart);
-        regionCharts.push(instanceServerTypeInfoChart);;
+        regionCharts.push(techInfoByRNC);
+        regionCharts.push(envDetailsByRNC);
+        regionCharts.push(serverDetailsByRNC);;
 
         regionCharts.push(prodOracleServersInfoChart);;
-        regionCharts.push(db2ServerProdInfoChart);;
+        regionCharts.push(prodDB2ServersInfoChart);;
         regionCharts.push(prodSqlServersByRNC);;
 
         regionCharts.push(nonProdOracleServersInfoChart);;
-        regionCharts.push(db2ServerNonProdInfoChart);;
+        regionCharts.push(nonProdDB2ServersInfoChart);;
         regionCharts.push(nonProdSqlServersByRNC);;
 
     }
