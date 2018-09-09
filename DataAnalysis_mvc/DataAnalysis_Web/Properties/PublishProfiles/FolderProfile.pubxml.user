@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/16/2018 00:12:16</publishTime>
     </File>
     <File Include="bin/DataAnalysis_Web.dll">
-      <publishTime>08/16/2018 00:12:21</publishTime>
+      <publishTime>09/09/2018 11:34:29</publishTime>
     </File>
     <File Include="bin/DataAnalysis_Web.pdb">
-      <publishTime>08/16/2018 00:12:21</publishTime>
+      <publishTime>09/09/2018 11:34:29</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>08/11/2018 23:33:08</publishTime>
@@ -538,19 +538,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/15/2018 22:36:52</publishTime>
     </File>
     <File Include="Scripts/app/globalServersInfo.js">
-      <publishTime>08/15/2018 22:35:10</publishTime>
+      <publishTime>09/05/2018 00:38:07</publishTime>
     </File>
     <File Include="Scripts/app/instanceInfo.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Scripts/app/RegionView.js">
-      <publishTime>08/15/2018 23:47:56</publishTime>
+      <publishTime>09/09/2018 11:18:32</publishTime>
     </File>
     <File Include="Scripts/app/searchInstance.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Scripts/app/summary.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
+    </File>
+    <File Include="Scripts/AvArray.js">
+      <publishTime>08/19/2018 11:59:31</publishTime>
     </File>
     <File Include="Scripts/bootstrap-material-design.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
@@ -696,6 +699,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/knockout.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
+    <File Include="Scripts/KolorWheel.js">
+      <publishTime>08/19/2018 11:59:31</publishTime>
+    </File>
+    <File Include="Scripts/KolorWheel.min.js">
+      <publishTime>08/19/2018 11:59:31</publishTime>
+    </File>
     <File Include="Scripts/mdb.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
@@ -710,6 +719,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/respond.min.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
+    </File>
+    <File Include="Scripts/spectrum.js">
+      <publishTime>08/19/2018 11:59:31</publishTime>
     </File>
     <File Include="Scripts/vectormap-data/africa.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
@@ -745,7 +757,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>08/11/2018 23:33:06</publishTime>
+      <publishTime>08/19/2018 23:27:50</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>08/11/2018 23:33:06</publishTime>
@@ -766,13 +778,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/13/2018 07:24:28</publishTime>
+      <publishTime>08/19/2018 19:53:21</publishTime>
     </File>
     <File Include="Views/Shared/_RegionView.cshtml">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Views/Shared/_RegionViewTab.cshtml">
-      <publishTime>08/15/2018 23:52:22</publishTime>
+      <publishTime>09/09/2018 03:22:14</publishTime>
     </File>
     <File Include="Views/Shared/_SearchTab.cshtml">
       <publishTime>08/11/2018 23:33:06</publishTime>

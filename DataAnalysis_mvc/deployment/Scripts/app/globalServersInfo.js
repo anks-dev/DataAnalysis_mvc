@@ -1,4 +1,20 @@
-﻿$(document).ready(function () {
+﻿function clearCanvas(cnv) {
+    var ctx = cnv.getContext('2d');     // gets reference to canvas context
+    if (!ctx) {
+        return;
+    }
+    ctx.beginPath();    // clear existing drawing paths
+    ctx.save();         // store the current transformation matrix
+
+    // Use the identity matrix while clearing the canvas
+    ctx.setTransform(1, 0, 0, 1, 0, 0);   
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+
+    ctx.restore();        // restore the transform
+}
+
+
+$(document).ready(function () {
    
     var jqxhr = $.ajax({
         method: "GET",
