@@ -120,7 +120,7 @@ function bindDataServerInfoToCharts(opts, canvas, field,container,legend) {
         tooltips:  {
             callbacks: {
                 label: function (tooltipItem, data) {
-                    debugger;
+                    
                     //get the concerned dataset
                     var dataset = data.datasets[tooltipItem.datasetIndex];
                     //calculate the total of this data set
@@ -603,7 +603,7 @@ $(document).ready(function () {
                 "rgb(245, 185, 76)"
             ];
             //opts.legendCtrl = $("#server-type-details-legend-Byrnc");
-
+            opts.colors = opts.colors.concat(getColorPallate(opts.data.length));
             let rootid = "serverTypeDetailsByrnc";
             let container = '#' + rootid + '-container';
             let legend = rootid + '-legend';
@@ -674,8 +674,11 @@ $(document).ready(function () {
         if (data.oracleServersProd) {
 
             opts.data = data.oracleServersProd.map(c => Object.values(c)[1]);
-            opts.labels = data.oracleServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.oracleServersProd.map(c => {
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
@@ -701,8 +704,11 @@ $(document).ready(function () {
            // $(nonProdSqlServersCanvas).parent().show();            
 
             opts.data = data.sqlServersNonProd.map(c => Object.values(c)[1]);
-            opts.labels = data.sqlServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.sqlServersNonProd.map(c => {
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
@@ -729,8 +735,11 @@ $(document).ready(function () {
            // $(nonProdDB2ServersCanvas).parent().show();
 
             opts.data = data.dB2ServersNonProd.map(c => Object.values(c)[1]);
-            opts.labels = data.dB2ServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.dB2ServersNonProd.map(c => {
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
@@ -758,8 +767,11 @@ $(document).ready(function () {
 
 
             opts.data = data.oracleServersNonProd.map(c => Object.values(c)[1]);
-            opts.labels = data.oracleServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.oracleServersNonProd.map(c => {
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
