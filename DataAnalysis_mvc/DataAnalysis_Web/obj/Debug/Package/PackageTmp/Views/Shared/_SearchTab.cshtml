@@ -1,0 +1,138 @@
+﻿
+<div class="row">
+    <div class="col-sm-12 vertical-margin">
+        <span>
+            <label class="lbl-search">Select Technology</label>
+            <span class="custom-dropdown">
+                <select id="technologyName" class="clearSearchOnChange">
+                    <option value="MSSQL">MSSQL</option>
+                    <option value="ORACLE">ORACLE</option>
+                    <option value="DB2">DB2</option>
+                    <option value="ALL">ALL</option>
+                </select>
+            </span>
+        </span>
+        <span>
+            <label class="lbl-search">Select LSA</label>
+            <span class="custom-dropdown">
+                <select id="companyName" class="clearSearchOnChange">
+                    <option value="Farmers">Farmers</option>
+                    <option value="EMEA">EMEA</option>
+                    <option value="ZNA">ZNA</option>
+                    <option value="21stCentury">21stCentury</option>
+                    <option>ALL</option>
+                </select>
+            </span>
+        </span>
+
+        <button type="button" class="btn btn-primary searchlsa">Search </button>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 querytemplate">
+        <span class="custom-dropdown">
+        </span>
+    </div>
+</div>
+<div class="">
+    <div class="instance-details-panel panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Custom Query Block</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-xs-12 query-block">
+                <div class="tab-content">
+                    <div class="vertical-margin" id="query">
+                        <div class="col-sm-12 vertical-margin">
+                        </div>
+                        <div class="col-sm-12 vertical-margin">
+                            <div class="col-sm-2">
+                                <label class="lbl-search">Select Field</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="lbl-search">Select Operator</label>
+
+                            </div>
+                            <div class="col-sm-7">
+                                <label class="lbl-search">Value</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-9 constContainer clear-side-padding">
+                            <div class="constBlock col-sm-12 clear-side-padding">
+                                <div class="col-sm-2 clear-side-padding">
+                                    <span class="custom-dropdown">
+                                        <select id="tableColumn" class="clearSearchOnChange"></select>
+                                    </span>
+                                </div>
+                                <div class="col-sm-3 ">
+                                    <span class="custom-dropdown">
+                                        <select id="operator" class="clearSearchOnChange">
+                                            <option value="=="> == </option>
+                                            <option value="!="> != </option>
+                                            <option value="<"> < </option>
+                                            <option value="<="> <= </option>
+                                            <option value=">"> > </option>
+                                            <option value=">="> >= </option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div class="col-sm-7 vertical-margin clear-side-padding">
+                                    <div class="col-sm-8 clear-side-padding">
+                                        <input id="matchValue" type="text"
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="pull-right d-inline-block">
+                                            @*<button id="addConstraint" type="button" title="Add another constraint"
+                                                        class="btn btn-primary addConstraint">
+                                                    + ADD
+                                                </button>
+                                                <button id="removeConstraint" type="button" title="Remove this constraint"
+                                                        class="btn btn-primary removeConstraint">
+                                                    X
+                                                </button>*@
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="pull-right d-inline-block">
+                                <button id="filter" type="button" title="Add another constraint"
+                                        class="btn btn-primary">
+                                    Filter
+                                </button>
+                                <button id="clearFilter" type="button" title="Remove this constraint"
+                                        class="btn btn-primary">
+                                    Clear Query
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="">
+        <div class="vertical-margin" id="list">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Search Result</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="instancesList" class="display" width="100%"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
