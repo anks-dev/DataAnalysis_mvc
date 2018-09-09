@@ -7,10 +7,6 @@ var instanceServerEnvInfoChart = {};
 var instanceServerTypeInfoChart = {};
 
 
-var lsachartt = {};
-var echartt = {};
-var tchartt = {};
-
 var techInfoByRNC = {};
 var envDetailsByRNC = {};
 var serverDetailsByRNC = {};
@@ -42,6 +38,17 @@ var regCharts = {
 
 }
 
+var colorPalet = [
+    "rgb(255, 99, 132)",
+    "rgb(54, 162, 235)",
+    "rgb(245, 185, 76)",
+    "#2ECC40",
+    "#FFDC00",
+    "#FF851B",
+    "#f172a1",
+    "#802bb1"
+];
+
 function getColorPallate(n) {
 
     if (n <= 0) {
@@ -52,28 +59,49 @@ function getColorPallate(n) {
     var h = -45;
     for (let n = 0; n < 10; n++) {
         var color = new KolorWheel([h, 100, 50]);
-        colorpallet.push(color.getHex());
+        let rgb = color.getRgb();
+        colorpallet.push('rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2]+','+ 0.8 + ')');
       
         h += 45;
-    } // for hue
+    } // for hue    
     return colorpallet;
 }
 
 function toggleLegend(el) {
     $(el).toggleClass("strikeoff");
 }
-function bindDataServerInfoToCharts(opts, canvas, field,container,legend) {
+function bindDataServerInfoToCharts(serverInfo) {
 
 
-
+    let canvas;
+    let opts = {};
+    let container = '#' + serverInfo.rootName + '-container';
+    let legend = serverInfo.rootName + '-legend';
+    let field = serverInfo.rootName + '-canvas';
     // reset canvas 
-    if (legend) {
-        
+    if (!serverInfo.data && !serverInfo.data.length) {
+        $(container).hide();
+
+        return;
+    } else {
+        $(container).show();
+    }
 
         //let rootid = "serverTechDetailsByrnc";
         //container = '#' + rootid + '-container';
         //legend =  rootid + '-legend';
         //field =  rootid + '-canvas';
+
+        opts.data = serverInfo.data.map(c => Object.values(c)[1]);
+        let total = opts.data.reduce((a, b) => a + b, 0);
+
+        opts.labels = serverInfo.data.map(c => {
+            let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+        });
+        opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+       
+      
 
         $(container).empty();
         let cnv = $('<canvas />').attr({ id: field, width : "400", height : "400" })
@@ -91,7 +119,9 @@ function bindDataServerInfoToCharts(opts, canvas, field,container,legend) {
         //ctx.fillText('This text is centered on the canvas', x, y);
 
 
-    }
+
+
+    
   
 
   
@@ -120,7 +150,7 @@ function bindDataServerInfoToCharts(opts, canvas, field,container,legend) {
         tooltips:  {
             callbacks: {
                 label: function (tooltipItem, data) {
-                    debugger;
+                    
                     //get the concerned dataset
                     var dataset = data.datasets[tooltipItem.datasetIndex];
                     //calculate the total of this data set
@@ -377,10 +407,7 @@ $(document).ready(function () {
           //  console.log(data);
             serverAnalysisData = data;
 
-            let techDetailsCanvas = document.getElementById("TechDetailsCanvas-rg");
-            let envDetailsCanvas = document.getElementById("EnvDetailsCanvas-rg");
-            let lsaDetailsCanvas = document.getElementById("LSADetailsCanvas-rg");
-
+           
 
 
 
@@ -392,53 +419,80 @@ $(document).ready(function () {
            
             let opts = {};
 
-            if (techDetailsCanvas) {
+            if (data.technologyCount) {
 
               
-                opts.data = data.technologyCount.map(c => Object.values(c)[1]);
-                opts.labels = data.technologyCount.map(c => Object.values(c)[0] + 'Servers (' + Object.values(c)[1] + ')');
+                //opts.data = data.technologyCount.map(c => Object.values(c)[1]);
+                //let total = opts.data.reduce((a, b) => a + b, 0);
 
-                opts.colors = ["rgb(255, 99, 132)",
-                    "rgb(54, 162, 235)",
-                    "rgb(255, 205, 86)"
-                ];
-                opts.legendCtrl = $("#tech-details-legend-rg");
+                //opts.labels = data.technologyCount.map(c => {
+                //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+                //});
+                //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
-                 tchartt = bindDataServerInfoToCharts(opts, techDetailsCanvas);
+                //let rootid = "techDetailsByRg";
+                //let container = '#' + rootid + '-container';
+                //let legend = rootid + '-legend';
+                //let field = rootid + '-canvas';
 
-            }
+                let serverInfo = {
+                    data: data.technologyCount,
+                    rootName : "techDetailsByRg"
+                }
 
-            if (envDetailsCanvas) {
-
-                opts.data = data.enviromnetCount.map(c => Object.values(c)[1]);
-                opts.labels = data.enviromnetCount.map(c => Object.values(c)[0] + 'Servers(' + Object.values(c)[1] + ')');
-
-                opts.colors = [
-                    "rgb(255, 99, 132)",
-                    "rgb(54, 162, 235)",
-                    "rgb(255, 205, 86)"
-                ];
-                opts.legendCtrl = $("#env-details-legend-rg");
-
-                 echartt = bindDataServerInfoToCharts(opts, envDetailsCanvas);
+                bindDataServerInfoToCharts(serverInfo);                                    
 
             }
 
-            if (lsaDetailsCanvas) {
+            if (data.enviromnetCount) {
 
+                //opts.data = data.enviromnetCount.map(c => Object.values(c)[1]);
+                //let total = opts.data.reduce((a, b) => a + b, 0);
+                //opts.labels = data.enviromnetCount.map(c => {
+                //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+                //});
+                //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
-                opts.data = data.lsaCount.map(c => Object.values(c)[1]);
-                opts.labels = data.lsaCount.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
+                //let rootid = "envDetailsByRg";
+                //let container = '#' + rootid + '-container';
+                //let legend = rootid + '-legend';
+                //let field = rootid + '-canvas';
 
-                opts.colors = [
-                    "rgb(255, 99, 132)",
-                    "rgb(54, 162, 235)",
-                    "rgb(1,132,143)",
-                    "rgb(245, 185, 76)"
-                ];
-                opts.legendCtrl = $("#lsa-details-legend-rg");
+                let serverInfo = {
+                    data: data.enviromnetCount,
+                    rootName: "envDetailsByRg"
+                }
 
-                lsachartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
+                bindDataServerInfoToCharts(serverInfo);    
+
+            }
+
+            if (data.lsaCount) {
+
+                //opts.data = data.lsaCount.map(c => Object.values(c)[1]);
+                //let total = opts.data.reduce((a, b) => a + b, 0);
+                //opts.labels = data.lsaCount.map(c => {
+                //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+                //});
+                //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+
+                //let rootid = "lsaDetailsByRg";
+                //let container = '#' + rootid + '-container';
+                //let legend = rootid + '-legend';
+                //let field = rootid + '-canvas';
+
+                //bindDataServerInfoToCharts(opts, techDetailsByrncCanvas, field, container, legend);
+
+                let serverInfo = {
+                    data: data.lsaCount,
+                    rootName: "lsaDetailsByRg"
+                }
+
+                bindDataServerInfoToCharts(serverInfo);  
+
 
             }
 
@@ -535,164 +589,188 @@ $(document).ready(function () {
         if (techDetails) {
 
            
-            opts.data = data.technologyCount.map(c => Object.values(c)[1]);
+            //opts.data = data.technologyCount.map(c => Object.values(c)[1]);
             
-            let total = opts.data.reduce((a, b) => a + b, 0);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
 
-            opts.labels = data.technologyCount.map(c => {
+            //opts.labels = data.technologyCount.map(c => {
                 
-                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
-                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
-            });
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
 
 
-            opts.colors = ["rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(255, 205, 86)"
-            ];
-            //opts.legendCtrl = $("#server-tech-details-legend-Byrnc");
+            //opts.colors = ["rgb(255, 99, 132)",
+            //    "rgb(54, 162, 235)",
+            //    "rgb(255, 205, 86)"
+            //];
+            ////opts.legendCtrl = $("#server-tech-details-legend-Byrnc");
 
-            let rootid = "serverTechDetailsByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
+            //let rootid = "serverTechDetailsByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
             
-            bindDataServerInfoToCharts(opts, techDetailsByrncCanvas, field, container, legend);
-            
+            //bindDataServerInfoToCharts(opts, techDetailsByrncCanvas, field, container, legend);
+
+            let serverInfo = {
+                data: data.technologyCount,
+                rootName: "serverTechDetailsByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo);  
+
             
 
         }
 
         if ( envDetails) {
 
-            opts.data = data.enviromnetCount.map(c => Object.values(c)[1]);
-            let total = opts.data.reduce((a, b) => a + b, 0);
-            opts.labels = data.enviromnetCount.map(c => {
+            //opts.data = data.enviromnetCount.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.enviromnetCount.map(c => {
 
-                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
-                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
-            });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(255, 205, 86)"
-            ];
-            //opts.legendCtrl = $("#server-env-details-legend-Byrnc");
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+            //opts.colors = [
+            //    "rgb(255, 99, 132)",
+            //    "rgb(54, 162, 235)",
+            //    "rgb(255, 205, 86)"
+            //];
+            ////opts.legendCtrl = $("#server-env-details-legend-Byrnc");
 
-            let rootid = "serverEnvDetailsByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
+            //let rootid = "serverEnvDetailsByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
 
-            bindDataServerInfoToCharts(opts, envDetailsCanvas, field, container, legend);
+            //bindDataServerInfoToCharts(opts, envDetailsCanvas, field, container, legend);
 
+            let serverInfo = {
+                data: data.enviromnetCount,
+                rootName: "serverEnvDetailsByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo);  
         }
 
         if (typeDetails) {
 
 
-            opts.data = data.lsaCount.map(c => Object.values(c)[1]);
-            let total = opts.data.reduce((a, b) => a + b, 0);
-            opts.labels = data.lsaCount.map(c => {
-                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
-                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
-            });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#server-type-details-legend-Byrnc");
+            //opts.data = data.lsaCount.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.lsaCount.map(c => {
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+           
+            ////opts.legendCtrl = $("#server-type-details-legend-Byrnc");
+            //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
-            let rootid = "serverTypeDetailsByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
+            //let rootid = "serverTypeDetailsByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
 
-            bindDataServerInfoToCharts(opts, serverTypeDetailsCanvas, field, container, legend);
+            //bindDataServerInfoToCharts(opts, serverTypeDetailsCanvas, field, container, legend);
+
+
+            let serverInfo = {
+                data: data.lsaCount,
+                rootName: "serverTypeDetailsByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo);  
             
         }
         
         if (data.sqlServersProd) {
 
-            $(prodSqlServersCanvas).parent().show();
+            //$(prodSqlServersCanvas).parent().show();
 
             
 
-            opts.data = data.sqlServersProd.map(c => Object.values(c)[1]);
-            let total = opts.data.reduce((a, b) => a + b, 0);
-            opts.labels = data.sqlServersProd.map(c => {
-                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
-                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
-            });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            opts.colors = getColorPallate(opts.data.length);
+            //opts.data = data.sqlServersProd.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.sqlServersProd.map(c => {
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+            //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
-            //opts.legendCtrl = $("#sql-servers-prod-legend-Byrnc");
-            let rootid = "prodSqlServersByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
 
-            bindDataServerInfoToCharts(opts, prodSqlServersCanvas, field, container, legend);
+            ////opts.legendCtrl = $("#sql-servers-prod-legend-Byrnc");
+            //let rootid = "prodSqlServersByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
 
-        } else {
-            $(prodSqlServersCanvas).parent().hide();
+            //bindDataServerInfoToCharts(opts, prodSqlServersCanvas, field, container, legend);
+
+            let serverInfo = {
+                data: data.sqlServersProd,
+                rootName: "prodSqlServersByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo);  
+
+
         }
 
         if (data.dB2ServersProd) {
 
-            opts.data = data.dB2ServersProd.map(c => Object.values(c)[1]);
-            let total = opts.data.reduce((a, b) => a + b, 0);
-            opts.labels = data.dB2ServersProd.map(c => {
-                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
-                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
-            });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#db2-servers-prod-legend");
-            opts.colors = getColorPallate(opts.data.length);
+            //opts.data = data.dB2ServersProd.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.dB2ServersProd.map(c => {
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+            //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
-            let rootid = "prodDB2ServersByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
 
-            bindDataServerInfoToCharts(opts, prodDB2ServersCanvas, field, container, legend);
+            //let rootid = "prodDB2ServersByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
 
-        } else {
-            $(prodDB2ServersCanvas).parent().hide();
-        }
+            //bindDataServerInfoToCharts(opts, prodDB2ServersCanvas, field, container, legend);
+
+            let serverInfo = {
+                data: data.dB2ServersProd,
+                rootName: "prodDB2ServersByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo);  
+
+        } 
 
         if (data.oracleServersProd) {
 
-            opts.data = data.oracleServersProd.map(c => Object.values(c)[1]);
-            opts.labels = data.oracleServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
+            //opts.data = data.oracleServersProd.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.oracleServersProd.map(c => {
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+            //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#oracle-servers-prod-legend");
-            opts.colors = getColorPallate(opts.data.length);
 
-            let rootid = "prodOracleServersByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
-            bindDataServerInfoToCharts(opts, prodOracleServersCanvas, field, container, legend);
+            //let rootid = "prodOracleServersByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
+            //bindDataServerInfoToCharts(opts, prodOracleServersCanvas, field, container, legend);
 
-        } else {
-            $(prodOracleServersCanvas).parent().hide();
+            let serverInfo = {
+                data: data.oracleServersProd,
+                rootName: "prodOracleServersByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo);  
+
         }
+
 
 
         if (data.sqlServersNonProd) {
@@ -700,102 +778,93 @@ $(document).ready(function () {
             
            // $(nonProdSqlServersCanvas).parent().show();            
 
-            opts.data = data.sqlServersNonProd.map(c => Object.values(c)[1]);
-            opts.labels = data.sqlServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
+            //opts.data = data.sqlServersNonProd.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.sqlServersNonProd.map(c => {
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+            //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-           // opts.legendCtrl = $("#sql-servers-nonprod-legend-Byrnc");
-            opts.colors = getColorPallate(opts.data.length);
+            //let rootid = "nonProdSqlServersByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
 
-            let rootid = "nonProdSqlServersByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
+            //bindDataServerInfoToCharts(opts, nonProdSqlServersCanvas, field, container, legend);
 
-            bindDataServerInfoToCharts(opts, nonProdSqlServersCanvas, field, container, legend);
+            let serverInfo = {
+                data: data.sqlServersNonProd,
+                rootName: "nonProdSqlServersByrnc"
+            }
 
-
-
-        } else {
-            $(nonProdSqlServersCanvas).parent().hide();
-        }
+            bindDataServerInfoToCharts(serverInfo);  
+            
+        } 
 
         if (data.dB2ServersNonProd) {
 
            // $(nonProdDB2ServersCanvas).parent().show();
 
-            opts.data = data.dB2ServersNonProd.map(c => Object.values(c)[1]);
-            opts.labels = data.dB2ServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#db2-servers-nonprod-legend");
-            opts.colors = getColorPallate(opts.data.length);
+            //opts.data = data.dB2ServersNonProd.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.dB2ServersNonProd.map(c => {
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+            //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
 
-            let rootid = "nonProdDB2ServersByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
 
-            bindDataServerInfoToCharts(opts, nonProdDB2ServersCanvas, field, container, legend);
+            //let rootid = "nonProdDB2ServersByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
+
+            //bindDataServerInfoToCharts(opts, nonProdDB2ServersCanvas, field, container, legend);
+
+            let serverInfo = {
+                data: data.dB2ServersNonProd,
+                rootName: "nonProdDB2ServersByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo);  
 
             
-        } else {
-            $(nonProdDB2ServersCanvas).parent().hide();
-        }
+        } 
 
         if ( data.oracleServersNonProd) {
 
            // $(nonProdOracleServersCanvas).parent().show();
 
 
-            opts.data = data.oracleServersNonProd.map(c => Object.values(c)[1]);
-            opts.labels = data.oracleServersNonProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#oracle-servers-nonprod-legend");
-            opts.colors = getColorPallate(opts.data.length);
+            //opts.data = data.oracleServersNonProd.map(c => Object.values(c)[1]);
+            //let total = opts.data.reduce((a, b) => a + b, 0);
+            //opts.labels = data.oracleServersNonProd.map(c => {
+            //    let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+            //    return Object.values(c)[0] + ' Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            //});
+            //opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
 
-            let rootid = "nonProdOracleServersByrnc";
-            let container = '#' + rootid + '-container';
-            let legend = rootid + '-legend';
-            let field = rootid + '-canvas';
 
-            nonProdOracleServersInfoChart = bindDataServerInfoToCharts(opts, nonProdOracleServersCanvas, field, container, legend);
-            
+            //let rootid = "nonProdOracleServersByrnc";
+            //let container = '#' + rootid + '-container';
+            //let legend = rootid + '-legend';
+            //let field = rootid + '-canvas';
 
-        } else {
-            $(nonProdOracleServersCanvas).parent().hide();
+            //nonProdOracleServersInfoChart = bindDataServerInfoToCharts(opts, nonProdOracleServersCanvas, field, container, legend);
+
+            let serverInfo = {
+                data: data.oracleServersNonProd,
+                rootName: "nonProdOracleServersByrnc"
+            }
+
+            bindDataServerInfoToCharts(serverInfo); 
+
         }
 
 
-       // techInfoByRNC.update();
-       
-       //regionCharts.push(techInfoByRNC);
-       // regionCharts.push(envDetailsByRNC);
-       
-       //regionCharts.push(serverDetailsByRNC);;
-       //
-       //regionCharts.push(prodOracleServersInfoChart);;
-       //regionCharts.push(prodDB2ServersInfoChart);;
-       //regionCharts.push(prodSqlServersByRNC);;
-       //
-       //regionCharts.push(nonProdOracleServersInfoChart);;
-       //regionCharts.push(nonProdDB2ServersInfoChart);;
-       //regionCharts.push(nonProdSqlServersByRNC);;
 
     }
 

@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/16/2018 00:12:16</publishTime>
     </File>
     <File Include="bin/DataAnalysis_Web.dll">
-      <publishTime>09/09/2018 11:34:29</publishTime>
+      <publishTime>09/09/2018 16:01:01</publishTime>
     </File>
     <File Include="bin/DataAnalysis_Web.pdb">
-      <publishTime>09/09/2018 11:34:29</publishTime>
+      <publishTime>09/09/2018 16:01:01</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>08/11/2018 23:33:08</publishTime>
@@ -538,13 +538,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/15/2018 22:36:52</publishTime>
     </File>
     <File Include="Scripts/app/globalServersInfo.js">
-      <publishTime>05/09/2018 00:38:07</publishTime>
+      <publishTime>09/05/2018 00:38:07</publishTime>
     </File>
     <File Include="Scripts/app/instanceInfo.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Scripts/app/RegionView.js">
-      <publishTime>09/09/2018 11:18:32</publishTime>
+      <publishTime>09/09/2018 15:52:57</publishTime>
     </File>
     <File Include="Scripts/app/searchInstance.js">
       <publishTime>08/11/2018 23:33:06</publishTime>
@@ -784,7 +784,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/11/2018 23:33:06</publishTime>
     </File>
     <File Include="Views/Shared/_RegionViewTab.cshtml">
-      <publishTime>09/09/2018 03:22:14</publishTime>
+      <publishTime>09/09/2018 15:14:34</publishTime>
     </File>
     <File Include="Views/Shared/_SearchTab.cshtml">
       <publishTime>08/11/2018 23:33:06</publishTime>
