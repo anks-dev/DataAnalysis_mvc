@@ -115,7 +115,37 @@ function bindDataServerInfoToCharts(opts, canvas, field,container,legend) {
             }
             text.push('</ul>');
             return text.join("");
-        }
+        },
+
+        tooltips:  {
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    debugger;
+                    //get the concerned dataset
+                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                    //calculate the total of this data set
+                    var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                        return previousValue + currentValue;
+                    });
+                    //get the current items value
+                    var currentValue = dataset.data[tooltipItem.index];
+                    //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
+                    var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+
+                    return data.labels[tooltipItem.index];
+
+                    //afterLabel: function(tooltipItem, data) {
+                    //    var sum = data.datasets.reduce((sum, dataset) => {
+                    //        return sum + dataset.data[tooltipItem.index];
+                    //    }, 0);
+                    //    var percent = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] / sum * 100;
+                    //    percent = percent.toFixed(2); // make a nice string
+                    //    return data.datasets[tooltipItem.datasetIndex].label + ': ' + percent + '%';
+                    //}
+
+                }
+            }
+        } 
     }
 
 
@@ -143,7 +173,7 @@ function bindDataServerInfoToCharts(opts, canvas, field,container,legend) {
 
     if (canvas) {
         Chart.defaults.global.defaultFontFamily = "Lato";
-        Chart.defaults.global.defaultFontSize = 18;
+        Chart.defaults.global.defaultFontSize = 16;
 
 
 
@@ -157,7 +187,7 @@ function bindDataServerInfoToCharts(opts, canvas, field,container,legend) {
         };
 
         if (field) {
-            debugger;
+            
             regCharts[field] = new Chart(canvas, {
                 type: 'doughnutLabels',
                 data: chartData,
@@ -408,7 +438,7 @@ $(document).ready(function () {
                 ];
                 opts.legendCtrl = $("#lsa-details-legend-rg");
 
-                 lsachartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
+                lsachartt = bindDataServerInfoToCharts(opts, lsaDetailsCanvas);
 
             }
 
@@ -506,7 +536,15 @@ $(document).ready(function () {
 
            
             opts.data = data.technologyCount.map(c => Object.values(c)[1]);
-            opts.labels = data.technologyCount.map(c => Object.values(c)[0] + 'Servers (' + Object.values(c)[1] + ')');
+            
+            let total = opts.data.reduce((a, b) => a + b, 0);
+
+            opts.labels = data.technologyCount.map(c => {
+                
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
+
 
             opts.colors = ["rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
@@ -528,8 +566,12 @@ $(document).ready(function () {
         if ( envDetails) {
 
             opts.data = data.enviromnetCount.map(c => Object.values(c)[1]);
-            opts.labels = data.enviromnetCount.map(c => Object.values(c)[0] + 'Servers(' + Object.values(c)[1] + ')');
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.enviromnetCount.map(c => {
 
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
@@ -550,8 +592,11 @@ $(document).ready(function () {
 
 
             opts.data = data.lsaCount.map(c => Object.values(c)[1]);
-            opts.labels = data.lsaCount.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.lsaCount.map(c => {
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
@@ -575,8 +620,11 @@ $(document).ready(function () {
             
 
             opts.data = data.sqlServersProd.map(c => Object.values(c)[1]);
-            opts.labels = data.sqlServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-            
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.sqlServersProd.map(c => {
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
@@ -599,8 +647,11 @@ $(document).ready(function () {
         if (data.dB2ServersProd) {
 
             opts.data = data.dB2ServersProd.map(c => Object.values(c)[1]);
-            opts.labels = data.dB2ServersProd.map(c => Object.values(c)[0] + ' Servers (' + Object.values(c)[1] + ')');
-
+            let total = opts.data.reduce((a, b) => a + b, 0);
+            opts.labels = data.dB2ServersProd.map(c => {
+                let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
+                return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
+            });
             opts.colors = [
                 "rgb(255, 99, 132)",
                 "rgb(54, 162, 235)",
