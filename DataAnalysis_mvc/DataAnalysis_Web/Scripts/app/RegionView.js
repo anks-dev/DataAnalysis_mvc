@@ -7,6 +7,7 @@ var instanceServerEnvInfoChart = {};
 var instanceServerTypeInfoChart = {};
 
 
+
 var lsachartt = {};
 var echartt = {};
 var tchartt = {};
@@ -42,6 +43,17 @@ var regCharts = {
 
 }
 
+var colorPalet = [
+    "rgb(255, 99, 132)",
+    "rgb(54, 162, 235)",
+    "rgb(245, 185, 76)",
+    "#2ECC40",
+    "#FFDC00",
+    "#FF851B",
+    "f172a1",
+    "802bb1"
+];
+
 function getColorPallate(n) {
 
     if (n <= 0) {
@@ -52,10 +64,12 @@ function getColorPallate(n) {
     var h = -45;
     for (let n = 0; n < 10; n++) {
         var color = new KolorWheel([h, 100, 50]);
-        colorpallet.push(color.getHex());
+        let rgb = color.getRgb();
+        colorpallet.push('rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2]+','+ 0.8 + ')');
       
         h += 45;
     } // for hue
+    debugger;
     return colorpallet;
 }
 
@@ -597,13 +611,10 @@ $(document).ready(function () {
                 let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
                 return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
             });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
+           
             //opts.legendCtrl = $("#server-type-details-legend-Byrnc");
-            opts.colors = opts.colors.concat(getColorPallate(opts.data.length));
+            opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+
             let rootid = "serverTypeDetailsByrnc";
             let container = '#' + rootid + '-container';
             let legend = rootid + '-legend';
@@ -625,12 +636,8 @@ $(document).ready(function () {
                 let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
                 return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
             });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            opts.colors = getColorPallate(opts.data.length);
+            opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+
 
             //opts.legendCtrl = $("#sql-servers-prod-legend-Byrnc");
             let rootid = "prodSqlServersByrnc";
@@ -652,13 +659,8 @@ $(document).ready(function () {
                 let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
                 return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
             });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#db2-servers-prod-legend");
-            opts.colors = getColorPallate(opts.data.length);
+            opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+
 
             let rootid = "prodDB2ServersByrnc";
             let container = '#' + rootid + '-container';
@@ -679,13 +681,8 @@ $(document).ready(function () {
                 let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
                 return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
             });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#oracle-servers-prod-legend");
-            opts.colors = getColorPallate(opts.data.length);
+            opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+
 
             let rootid = "prodOracleServersByrnc";
             let container = '#' + rootid + '-container';
@@ -709,13 +706,7 @@ $(document).ready(function () {
                 let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
                 return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
             });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-           // opts.legendCtrl = $("#sql-servers-nonprod-legend-Byrnc");
-            opts.colors = getColorPallate(opts.data.length);
+            opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
 
             let rootid = "nonProdSqlServersByrnc";
             let container = '#' + rootid + '-container';
@@ -740,13 +731,8 @@ $(document).ready(function () {
                 let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
                 return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
             });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#db2-servers-nonprod-legend");
-            opts.colors = getColorPallate(opts.data.length);
+            opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+
 
 
             let rootid = "nonProdDB2ServersByrnc";
@@ -772,13 +758,8 @@ $(document).ready(function () {
                 let percentage = Math.floor(((Object.values(c)[1] / total) * 100) + 0.5);
                 return Object.values(c)[0] + 'Servers : ' + Object.values(c)[1] + ' : ' + percentage + '%'
             });
-            opts.colors = [
-                "rgb(255, 99, 132)",
-                "rgb(54, 162, 235)",
-                "rgb(245, 185, 76)"
-            ];
-            //opts.legendCtrl = $("#oracle-servers-nonprod-legend");
-            opts.colors = getColorPallate(opts.data.length);
+            opts.colors = colorPalet.concat(getColorPallate(opts.data.length));
+
 
 
             let rootid = "nonProdOracleServersByrnc";
@@ -793,21 +774,6 @@ $(document).ready(function () {
             $(nonProdOracleServersCanvas).parent().hide();
         }
 
-
-       // techInfoByRNC.update();
-       
-       //regionCharts.push(techInfoByRNC);
-       // regionCharts.push(envDetailsByRNC);
-       
-       //regionCharts.push(serverDetailsByRNC);;
-       //
-       //regionCharts.push(prodOracleServersInfoChart);;
-       //regionCharts.push(prodDB2ServersInfoChart);;
-       //regionCharts.push(prodSqlServersByRNC);;
-       //
-       //regionCharts.push(nonProdOracleServersInfoChart);;
-       //regionCharts.push(nonProdDB2ServersInfoChart);;
-       //regionCharts.push(nonProdSqlServersByRNC);;
 
     }
 
